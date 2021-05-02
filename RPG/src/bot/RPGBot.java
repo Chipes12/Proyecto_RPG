@@ -9,7 +9,7 @@ public class RPGBot {
 	public static void main(String[] args) throws IOException {
 		
 		try {
-			bot = new Bot("!", "An RPG Bot! Use !help");
+			bot = new Bot("!", "An RPG Bot!");
 		} catch (LoginException e) {
 			e.printStackTrace();
 		}
