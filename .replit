@@ -1,0 +1,3 @@
+run="java RPG/src/bot/Bot.java"
+language="java"
+onBoot="echo Booting up!"
