@@ -60,7 +60,8 @@ public class Item implements Comparable <Item>{
 	}
 	
 	public String toStringDetails() {
-		return this.toString() + "\n\t" + this.getDescription();
+		if (this.getDescription().strip() == "") return this.toString();
+		return this.toString() + "\n\tDescription: " + this.getDescription();
 	}
 	
 	public boolean equals(Item i) {
