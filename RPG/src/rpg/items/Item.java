@@ -15,7 +15,7 @@ public class Item implements Comparable <Item>{
 	
 	//Setters
 	public void setName(String name) {
-		if (name != null && name.strip() != "") this.name = name;
+		if (name != null && name.strip() != "" && name.length() <= 20) this.name = name;
 	}
 	
 	public void setPrice(int price) {
@@ -47,7 +47,7 @@ public class Item implements Comparable <Item>{
 	}
 	//Methods
 	public String toString() {
-		return this.getName() + "\t$" + this.getPrice() + "\tLvl:" + this.getLevel();
+		return this.getName() + "\t$" + this.getPrice() + "\tLvl:" + this.getLevel() + "\tType: " + this.itemType;
 	}
 	
 	public boolean equals(Item i) {

@@ -8,7 +8,7 @@ public class Armor extends Item {
 	public Armor(String name, int price, int level, int armorClass) {
 		super(name, price, level);
 		this.setArmorClass(armorClass);
-		super.setItemType(itemType);
+		this.setItemType(itemType);
 	}
 
 	//Setters
