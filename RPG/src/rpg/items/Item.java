@@ -4,6 +4,7 @@ public class Item implements Comparable <Item>{
 	private String name = "";
 	private int price = 0;
 	private int level = 1;
+	private String itemType = "Item";
 	
 	//Constructores
 	public Item(String name, int price, int level) {
@@ -25,6 +26,9 @@ public class Item implements Comparable <Item>{
 		if (level >= 1) this.level = level;
 	}
 	
+	protected void setItemType(String itemType) {
+		this.itemType = itemType;
+	}
 	//Getters
 	public String getName() {
 		return name;
@@ -38,6 +42,9 @@ public class Item implements Comparable <Item>{
 		return level;
 	}
 	
+	public String getItemType() {
+		return this.itemType;
+	}
 	//Methods
 	public String toString() {
 		return this.getName() + "\t$" + this.getPrice() + "\tLvl:" + this.getLevel();
@@ -51,6 +58,15 @@ public class Item implements Comparable <Item>{
 
 	@Override
 	public int compareTo(Item i) {
-		return this.getName().compareTo(i.getName());
+		int comp = this.getItemType().compareTo(i.getItemType());
+		if (comp != 0) return comp;
+		
+		comp = this.getName().compareTo(i.getName());
+		if (comp != 0) return comp;
+		
+		comp = Integer.compare(this.getLevel(), i.getLevel());
+		if (comp != 0) return comp;
+		
+		return Integer.compare(this.getPrice(), i.getPrice());
 	}
 }
