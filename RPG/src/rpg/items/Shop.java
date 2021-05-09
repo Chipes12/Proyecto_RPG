@@ -24,11 +24,15 @@ public class Shop {
 		this.items.remove(item);
 	}
 	public String toString() {
-		String str = "\t\t\tShop\t\t\t\n";
+		String str = "************Shop*************\t\n";
 		List<Item> itemsList = new ArrayList<Item>(items);
-		for(int i = 0; i < items.size(); i++) {
-			str += i +") " + itemsList.get(i).toString();
+		for(int i = 1; i <= items.size(); i++) {
+			str += i +") " + itemsList.get(i-1).toString() + "\n";
 		}
 		return str;
+	}
+	public Item select(int index) {
+		List<Item> itemsList = new ArrayList<Item>(items);
+		return itemsList.get(index - 1);
 	}
 }
