@@ -58,7 +58,7 @@ public void setDefense(int defense) {
 		this.setType(type);
 	}
 	
-	//Methods
+	//Method
 	public String toStringDetails() {
 		String str = super.toString() + "\n\t";
 		if(this.getAttack() > 0) {
