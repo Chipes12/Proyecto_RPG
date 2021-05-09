@@ -22,8 +22,9 @@ public class Armor extends Item {
 	}
 	
 	//Methods
+	@Override
 	public String toStringDetails() {
-		return super.toString() + "\n\tArmor Class: +" + this.getArmorClass();
+		return super.toStringDetails() + "\n\tArmor Class: +" + this.getArmorClass();
 	}
 	
 	@Override

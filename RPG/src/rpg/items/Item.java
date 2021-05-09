@@ -5,6 +5,7 @@ public class Item implements Comparable <Item>{
 	private int price = 0;
 	private int level = 1;
 	private String itemType = "Item";
+	private String description = "";
 	
 	//Constructores
 	public Item(String name, int price, int level) {
@@ -26,6 +27,10 @@ public class Item implements Comparable <Item>{
 		if (level >= 1) this.level = level;
 	}
 	
+	public void setDescription(String description) {
+		if (description != null) this.description = description;
+	}
+	
 	protected void setItemType(String itemType) {
 		this.itemType = itemType;
 	}
@@ -45,9 +50,17 @@ public class Item implements Comparable <Item>{
 	public String getItemType() {
 		return this.itemType;
 	}
+	
+	public String getDescription() {
+		return this.description;
+	}
 	//Methods
 	public String toString() {
 		return this.getName() + "\t$" + this.getPrice() + "\tLvl:" + this.getLevel() + "\tType: " + this.itemType;
+	}
+	
+	public String toStringDetails() {
+		return this.toString() + "\n\t" + this.getDescription();
 	}
 	
 	public boolean equals(Item i) {
