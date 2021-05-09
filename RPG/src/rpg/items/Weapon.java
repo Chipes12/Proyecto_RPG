@@ -1,7 +1,7 @@
 package rpg.items;
 
 public class Weapon extends Item{
-	enum WeaponEnum{
+	public enum WeaponEnum{
 		MELEE,
 		RANGE,
 		SHIELD,
@@ -32,7 +32,7 @@ public class Weapon extends Item{
 	//Setters
 	public void setAttack(int attack) {
 		if(attack > 0) {
-			this.setAttack(attack);
+			this.attack = attack;
 		}
 	}	
 	public void setMagicAttack(int magicAttack) {
@@ -51,7 +51,7 @@ public void setDefense(int defense) {
 	}
 	
 	public Weapon(String name, int price, int level, int attack, int magicAttack, int defense, WeaponEnum type) {
-		super(name, defense, defense);
+		super(name, price, level);
 		this.setAttack(attack);
 		this.setMagicAttack(magicAttack);
 		this.setDefense(defense);
