@@ -34,6 +34,7 @@ public class Item implements Comparable <Item>{
 	protected void setItemType(String itemType) {
 		this.itemType = itemType;
 	}
+	
 	//Getters
 	public String getName() {
 		return name;

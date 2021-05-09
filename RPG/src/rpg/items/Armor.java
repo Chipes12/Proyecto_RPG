@@ -29,7 +29,7 @@ public class Armor extends Item {
 	
 	@Override
 	public boolean equals(Item i) {
-		Armor a = (Armor) i;
+		Armor a = (Armor) i; 
 		return super.equals(i) && this.getArmorClass() == a.getArmorClass();
 	}
 }
