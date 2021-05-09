@@ -13,7 +13,7 @@ public class Weapon extends Item{
 	private int magicAttack;
 	private int defense;
 	private WeaponEnum type;
-	static String itemType = "Weapon";
+	private final static String itemType = "Weapon";
 	
 	//getters
 	public int getAttack() {
@@ -56,11 +56,12 @@ public void setDefense(int defense) {
 		this.setMagicAttack(magicAttack);
 		this.setDefense(defense);
 		this.setType(type);
+		this.setItemType(itemType);
 	}
 	
-	//Method
+	//Methods
 	public String toStringDetails() {
-		String str = super.toString() + "\n\t";
+		String str = super.toStringDetails() + "\n\t";
 		if(this.getAttack() > 0) {
 			str += "Attack: " + this.getAttack() +"\n\t"; 
 		}
