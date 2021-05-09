@@ -2,11 +2,13 @@ package rpg.items;
 
 public class Armor extends Item {
 	private int armorClass = 0;
+	private final static String itemType = "Armor";
 
 	//Constructor
 	public Armor(String name, int price, int level, int armorClass) {
 		super(name, price, level);
 		this.setArmorClass(armorClass);
+		super.setItemType(itemType);
 	}
 
 	//Setters
