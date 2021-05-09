@@ -31,7 +31,7 @@ public class Shop {
 		}
 		return str;
 	}
-	public Item select(int index) {
+	public Item selectItem(int index) {
 		List<Item> itemsList = new ArrayList<Item>(items);
 		return itemsList.get(index - 1);
 	}
