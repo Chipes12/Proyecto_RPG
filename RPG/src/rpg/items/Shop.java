@@ -2,12 +2,11 @@ package rpg.items;
 import java.util.*;
 
 public class Shop {
-	//Atributo ser un arbol para no tener items repetidos
+	//Atributo es un arbol para no tener items repetidos
 	private TreeSet<Item> items = new TreeSet<>();
 	
 	//Constructor
-	public Shop () {
-	}
+	public Shop () {}
 	
 	//Getter
 	public TreeSet<Item> getItems() {
@@ -28,17 +27,14 @@ public class Shop {
 	
 	//Borrar Items 
 	public Item deleteItem(Item item) {
-		try {
-			items.remove(item);
-			return item;
-		}catch(Exception e) {
-			return null;
-		}
+		if (!items.contains(item)) return null;
+		items.remove(item);
+		return item;
 	}
 	
 	//Interfaz de menu de compras
 	public String toString() {
-		String str = "*******************Shop********************\t\n";
+		String str = "";
 		List<Item> itemsList = new ArrayList<Item>(items);
 		for(int i = 1; i <= items.size(); i++) {
 			str += i +") " + itemsList.get(i-1).toString() + "\n";
@@ -47,12 +43,12 @@ public class Shop {
 	}
 	
 	//Selección y retorno de un item y en caso de que item no exista
-	public Item selectItem(int index) { try {
-		List<Item> itemsList = new ArrayList<Item>(items);
-		return itemsList.get(index - 1);
-	}catch(Exception e) {
-		return null;
-	}
-
+	public Item selectItem(int index) { 
+		try {
+			List<Item> itemsList = new ArrayList<Item>(items);
+			return itemsList.get(index - 1);
+		}catch(Exception e) {
+			return null;
+		}
 	}
 }
