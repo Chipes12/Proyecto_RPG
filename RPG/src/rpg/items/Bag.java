@@ -7,7 +7,7 @@ public class Bag {
 	private int money;
 	//Atributos static para usarse cuando se cree cualquier bag
 	private static int BAG_SIZE = 30;
-	private static int initialMoney = 100;
+	private static int initialMoney = 20;
 	private static TreeMap <Item, Integer> initialItems; 
 	
 	//Constructor

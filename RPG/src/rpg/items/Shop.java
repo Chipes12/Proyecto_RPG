@@ -27,15 +27,15 @@ public class Shop {
 	
 	//Borrar Items 
 	public Item deleteItem(Item item) {
-		if (!items.contains(item)) return null;
-		items.remove(item);
+		if (!this.items.contains(item)) return null;
+		this.items.remove(item);
 		return item;
 	}
 	
 	//Interfaz de menu de compras
 	public String toString() {
 		String str = "";
-		List<Item> itemsList = new ArrayList<Item>(items);
+		List<Item> itemsList = new ArrayList<Item>(this.items);
 		for(int i = 1; i <= items.size(); i++) {
 			str += i +") " + itemsList.get(i-1).toString() + "\n";
 		}
@@ -45,7 +45,7 @@ public class Shop {
 	//Selección y retorno de un item y en caso de que item no exista
 	public Item selectItem(int index) { 
 		try {
-			List<Item> itemsList = new ArrayList<Item>(items);
+			List<Item> itemsList = new ArrayList<Item>(this.items);
 			return itemsList.get(index - 1);
 		}catch(Exception e) {
 			return null;
