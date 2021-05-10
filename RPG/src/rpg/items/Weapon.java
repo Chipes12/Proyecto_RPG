@@ -1,6 +1,7 @@
 package rpg.items;
 
 public class Weapon extends Item{
+	//Enum de Armas y sus clases
 	public enum WeaponEnum{
 		MELEE,
 		RANGE,
@@ -9,9 +10,10 @@ public class Weapon extends Item{
 		MAGICMELEE;
 
 	}
-	private int attack;
-	private int magicAttack;
-	private int defense;
+	//Atributos default
+	private int attack = 0;
+	private int magicAttack = 0;
+	private int defense = 0;
 	private WeaponEnum type;
 	private final static String itemType = "Weapon";
 	
@@ -29,7 +31,7 @@ public class Weapon extends Item{
 		return type;
 	}
 
-	//Setters
+	//Setters con condición para que los valores no sean negativos y que sean dentro del enum
 	public void setAttack(int attack) {
 		if(attack > 0) {
 			this.attack = attack;
@@ -40,8 +42,7 @@ public class Weapon extends Item{
 			this.magicAttack = magicAttack;
 		}
 	}
-	
-public void setDefense(int defense) {
+	public void setDefense(int defense) {
 		if(defense > 0)	this.defense = defense;
 	}
 	public void setType(WeaponEnum type) {
@@ -50,6 +51,7 @@ public void setDefense(int defense) {
 		}
 	}
 	
+	//Constructor con llamada a la super clase y definicion de todos los elementos
 	public Weapon(String name, int price, int level, int attack, int magicAttack, int defense, WeaponEnum type) {
 		super(name, price, level);
 		this.setAttack(attack);
@@ -60,6 +62,8 @@ public void setDefense(int defense) {
 	}
 	
 	//Methods
+	
+	//toStringDetails convierte todo a un string con información adicional en caso de seleccionar un item
 	public String toStringDetails() {
 		String str = super.toStringDetails() + "\n";
 		if(this.getAttack() > 0) {

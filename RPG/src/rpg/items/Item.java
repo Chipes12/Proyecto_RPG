@@ -1,6 +1,8 @@
 package rpg.items;
 
 public class Item implements Comparable <Item>{
+	
+	//Atributos default
 	private String name = "";
 	private int price = 0;
 	private int level = 1;
@@ -14,7 +16,7 @@ public class Item implements Comparable <Item>{
 		this.setLevel(level);
 	}
 	
-	//Setters
+	//Setters con condiciones para que sean positivos y distintos a cadenas vacias
 	public void setName(String name) {
 		if (name != null && name.strip() != "" && name.length() <= 20) this.name = name;
 	}
@@ -27,10 +29,12 @@ public class Item implements Comparable <Item>{
 		if (level >= 1) this.level = level;
 	}
 	
+	//Setter adicional en caso de que se quiera añadir una leyenda o descripción al Item
 	public void setDescription(String description) {
 		if (description != null) this.description = description;
 	}
 	
+	//Metodo que nos ayuda a distinguir el nombre de tipo y tenerlo como string
 	protected void setItemType(String itemType) {
 		this.itemType = itemType;
 	}
@@ -55,22 +59,29 @@ public class Item implements Comparable <Item>{
 	public String getDescription() {
 		return this.description;
 	}
+	
 	//Methods
+	
+	//toString sólo da la información basica de un item que son su precio, nivel, nombre y tipo de objeto
 	public String toString() {
 		return this.getName() + "\t$" + this.getPrice() + "\tLvl:" + this.getLevel() + "\tType: " + this.itemType;
 	}
 	
+	//toStringDetails se sobreescribira más adelante aquí sólamente se le añade la leyenda si es que hay una
 	public String toStringDetails() {
 		if (this.getDescription().strip() == "") return this.toString();
 		return this.toString() + "\n\tDescription: " + this.getDescription();
 	}
 	
+	//Debe ser la misma clase y tener los mismos 3 atributos principales
 	public boolean equals(Item i) {
 		if (this.getClass() != i.getClass()) return false;
 		return this.getName() == i.getName() && this.getPrice() == i.getPrice() 
 				&& this.getLevel() == i.getLevel();
 	}
 
+	//compareTo que organiza y elimina elementos repetidoz, el orden va de
+	//TipoItem > OrdenAlfabetico > orden asendente de nivel > orden asendente de precio
 	@Override
 	public int compareTo(Item i) {
 		int comp = this.getItemType().compareTo(i.getItemType());
