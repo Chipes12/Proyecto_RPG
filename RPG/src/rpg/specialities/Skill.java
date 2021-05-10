@@ -1,7 +1,7 @@
 package rpg.specialities;
 import rpg.items.Weapon.WeaponEnum; 
 
-public class Skill {
+public class Skill implements Comparable<Skill>{
 	private String name = "";
 	private int damage = 0;
 	private int magicDamage = 0;
@@ -87,4 +87,11 @@ public class Skill {
 		str += "Needed weapon type: " + this.getWeaponType() + "\n";
 		return str;
 	}
+	@Override
+	public int compareTo(Skill o) {
+		int comp = Integer.compare(this.getMinLevel(), o.getMinLevel());
+		if(comp != 0) return comp;
+		comp = this.getName().compareTo(o.getName());
+		return comp;
+		}
 }

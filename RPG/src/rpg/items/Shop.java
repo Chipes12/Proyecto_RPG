@@ -1,6 +1,8 @@
 package rpg.items;
 import java.util.*;
 
+import rpg.items.Weapon.WeaponEnum;
+
 public class Shop {
 	private TreeSet<Item> items;
 	
@@ -28,7 +30,7 @@ public class Shop {
 	}
 	
 	public String toString() {
-		String str = "************Shop*************\t\n";
+		String str = "*******************Shop********************\t\n";
 		List<Item> itemsList = new ArrayList<Item>(items);
 		for(int i = 1; i <= items.size(); i++) {
 			str += i +") " + itemsList.get(i-1).toString() + "\n";
