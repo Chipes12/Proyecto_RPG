@@ -61,15 +61,15 @@ public void setDefense(int defense) {
 	
 	//Methods
 	public String toStringDetails() {
-		String str = super.toStringDetails() + "\n\t";
+		String str = super.toStringDetails() + "\n";
 		if(this.getAttack() > 0) {
-			str += "Attack: " + this.getAttack() +"\n\t"; 
+			str += "Attack: " + this.getAttack() +"\n"; 
 		}
 		if(this.getMagicAttack() > 0) {
-			str += "Magic Attack: " + this.getMagicAttack() + "\n\t"; 
+			str += "Magic Attack: " + this.getMagicAttack() + "\n"; 
 		}
 		if(this.getDefense() > 0) {
-			str += "Defense: " + this.getDefense() + "\n\t"; 
+			str += "Defense: " + this.getDefense() + "\n"; 
 		}
 		str += this.getType();
 		return str;
