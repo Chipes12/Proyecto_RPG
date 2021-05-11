@@ -1,5 +1,5 @@
 package rpg.specialities;
 
-public class Class {
+public class PlayerClass {
 
 }
