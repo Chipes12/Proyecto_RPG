@@ -36,4 +36,12 @@ public class Armor extends Item {
 		Armor a = (Armor) i; 
 		return super.equals(i) && this.getArmorClass() == a.getArmorClass();
 	}
+	
+	@Override
+	public Item clone() {
+		Armor armor = new Armor(this.getName(), this.getPrice(), this.getLevel(), this.getArmorClass());
+		armor.setItemType(this.getItemType());
+		armor.setDescription(this.getDescription());
+		return armor;
+	}
 }

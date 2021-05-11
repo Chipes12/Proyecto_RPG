@@ -84,5 +84,12 @@ public class Weapon extends Item{
 		Weapon a = (Weapon) i;
 		return super.equals(i) && a.getAttack() == this.getAttack() && a.getDefense() == this.getDefense() && a.getMagicAttack() == this.getMagicAttack() && this.getType() == a.getType(); 
 	}
+	@Override
+	public Item clone() {
+		Weapon weapon = new Weapon(this.getName(), this.getPrice(), this.getLevel(), this.getAttack(), this.getMagicAttack(), this.getDefense(), this.getType());
+		weapon.setDescription(this.getDescription());
+		weapon.setItemType(this.getItemType());
+		return weapon;
+	}
 	
 }

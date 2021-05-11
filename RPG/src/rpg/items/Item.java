@@ -80,7 +80,7 @@ public class Item implements Comparable <Item>{
 				&& this.getLevel() == i.getLevel();
 	}
 
-	//compareTo que organiza y elimina elementos repetidoz, el orden va de
+	//compareTo que organiza y elimina elementos repetidos, el orden va de
 	//TipoItem > OrdenAlfabetico > orden asendente de nivel > orden asendente de precio
 	@Override
 	public int compareTo(Item i) {
@@ -94,5 +94,11 @@ public class Item implements Comparable <Item>{
 		if (comp != 0) return comp;
 		
 		return Integer.compare(this.getPrice(), i.getPrice());
+	}
+	public Item clone() {
+		Item item = new Item(this.getItemType(), this.getPrice(), this.getLevel());
+		item.setDescription(this.getDescription());
+		item.setItemType(this.getItemType());
+		return item;
 	}
 }

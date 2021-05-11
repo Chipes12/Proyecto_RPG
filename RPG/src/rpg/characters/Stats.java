@@ -7,5 +7,5 @@ public enum Stats{
 	inteligence,
 	dexterity,
 	constitution,
-	defense;
+	armorclass;
 }
