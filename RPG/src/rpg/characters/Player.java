@@ -22,6 +22,9 @@ public class Player extends Entity{
 	}
 	
 	//gettters
+	public Armor getArmor() {
+		return this.armor;
+	}
 	public static double getSellRate() {
 		return sellRate;
 	}
@@ -32,7 +35,7 @@ public class Player extends Entity{
 		return this.xp;
 	}
 	
-	//setters
+	//setters 
 	public static void setMinToSellRate(int minToSellRate) {
 		Player.minToSellRate = minToSellRate;
 	}
@@ -103,4 +106,11 @@ public class Player extends Entity{
 		if(this.getHp() == 0 && this.isAlive()) this.setAlive(false);
 		this.setXp(0);
 	}
+	public boolean useConsumable(Consumable cons) {
+		if(!(this.bag.getItems().containsKey(cons))) return false;
+		cons.boostStasts(this);
+		bag.deleteItem(cons);
+		return true;
+	}
+	
 }
