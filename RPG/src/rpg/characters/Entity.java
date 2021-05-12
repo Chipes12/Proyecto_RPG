@@ -22,7 +22,7 @@ public abstract class Entity {
     	baseSkills.put(new Skill("Punch", 5, 0, 0, 1, true, null), 1);
     	baseStats.put(Stats.max_hp, baseHp);
     	baseStats.put(Stats.max_mp, baseMp);
-    	baseStats.put(Stats.strenght, 0);
+    	baseStats.put(Stats.strength, 0);
     	baseStats.put(Stats.intelligence, 0);
     	baseStats.put(Stats.dexterity, 0);
     	baseStats.put(Stats.constitution, 0);

@@ -62,7 +62,14 @@ public class Consumable extends Item{
 			}
 		return str;
 	}
+	
 	public void boostStasts(Player player) {
-		//player.getStats().
+		TreeMap <Stats, Integer> pStats = player.getStats();
+		Stats[] pStatsA = pStats.keySet().toArray(new Stats[7]);
+		
+		for(int i = 0; i < 7; i++)
+			pStats.put(pStatsA[i], pStats.get(pStatsA[i]) + this.boostedStats.get(pStatsA[i]));
 	}
+	
+	
 }

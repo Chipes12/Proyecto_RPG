@@ -3,7 +3,7 @@ package rpg.characters;
 public enum Stats{
 	max_hp,
 	max_mp,
-	strenght,
+	strength,
 	intelligence,
 	dexterity,
 	constitution,
