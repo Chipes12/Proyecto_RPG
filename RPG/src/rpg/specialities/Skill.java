@@ -58,7 +58,7 @@ public class Skill implements Comparable<Skill>{
 			this.weaponType = null;
 			return;
 		}
-		if(weaponType.ordinal() >= WeaponEnum.MELEE.ordinal() && weaponType.ordinal() <= WeaponEnum.MAGICMELEE.ordinal()) {
+		if(weaponType.ordinal() >= WeaponEnum.MELEE.ordinal() && weaponType.ordinal() <= WeaponEnum.NONE.ordinal()) {
 			this.weaponType = weaponType;
 		}
 	}
