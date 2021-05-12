@@ -5,8 +5,9 @@ import java.util.TreeMap;
 import rpg.items.*;
 import rpg.specialities.*;
 
-public class Player extends Entity{
+public class Player <T> extends Entity{
 	
+	private T iD = null;
 	private Bag bag = new Bag();
 	private PlayerClass playerClass = null;
 	private Armor armor;
@@ -15,8 +16,9 @@ public class Player extends Entity{
 	private static int minToSellRate = 20;  
 	
 	//Constructor
-	public Player(String name) {
+	public Player(String name, T iD) {
 		super(name);
+		if(this.iD == null) this.iD = iD;
 	}
 	
 	//Gettters
@@ -32,7 +34,9 @@ public class Player extends Entity{
 	public int getXp() {
 		return this.xp;
 	}
-	
+	public T getID() {
+		return this.iD;
+	}
 	//setters 
 	public static void setMinToSellRate(int minToSellRate) {
 		Player.minToSellRate = minToSellRate;
