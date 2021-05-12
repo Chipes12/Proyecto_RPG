@@ -16,6 +16,7 @@ public class Skill implements Comparable<Skill>{
 	private int mpCost = 0;
 	private int minLevel = 1;
 	private boolean learnable = true;
+	private int maxTargets = 1;
 	private WeaponEnum weaponType;
 	private SkillEnum skillType;
 	
@@ -34,30 +35,32 @@ public class Skill implements Comparable<Skill>{
 	
 	//Getters
 	public String getName() {
-		return name;
+		return this.name;
 	}
 	public int getDamage() {
-		return damage;
+		return this.damage;
 	}
 	public int getMagicDamage() {
-		return magicDamage;
+		return this.magicDamage;
 	}
 	public int getMpCost() {
-		return mpCost;
+		return this.mpCost;
 	}
 	public int getMinLevel() {
-		return minLevel;
+		return this.minLevel;
 	}
 	public boolean isLearnable() {
-		return learnable;
+		return this.learnable;
 	}
 	public WeaponEnum getWeaponType() {
-		return weaponType;
+		return this.weaponType;
 	}
 	public SkillEnum getSkillType() {
-		return skillType;
+		return this.skillType;
 	}
-	
+	public int getMaxTargets() {
+		return this.maxTargets;
+	}
 	//Setters con condiciones para que no haya cadenas vacias ni numeros menores a 0
 	public void setName(String name) {
 		if (name != null && name.strip() != "" && name.length() <= 20) this.name = name;
@@ -76,6 +79,9 @@ public class Skill implements Comparable<Skill>{
 	}
 	public void setLearnable(boolean learnable) {
 		this.learnable = learnable;
+	}
+	public void setMaxTargets(int maxTargets) {
+		if(maxTargets >= 0) this.maxTargets = maxTargets;
 	}
 	public void setWeaponType(WeaponEnum weaponType) {
 		if(weaponType.ordinal() >= WeaponEnum.MELEE.ordinal() && weaponType.ordinal() <= WeaponEnum.NONE.ordinal()) {
