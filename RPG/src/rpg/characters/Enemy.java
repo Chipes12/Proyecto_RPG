@@ -15,7 +15,6 @@ public class Enemy extends Entity{
 	//Constructor
 	public Enemy(String name, int lvl, List<Item> itemDrop, int xpDrop, int goldDrop) {
 		super(name);
-		// TODO Auto-generated constructor stub
 		this.setLvl(lvl);
 		this.setGoldDrop(goldDrop);
 		this.setXpDrop(xpDrop);
@@ -51,14 +50,13 @@ public class Enemy extends Entity{
 		enemy.setTargets(getTargets());
 		enemy.setHp(this.getHp());
 		enemy.setMp(this.getMp());
-		enemy.setEquipedItem(this.getEquipedItem());
+		enemy.setEquippedItem(this.getEquippedItem());
 		enemy.setSkills(this.getSkills());
 		return enemy;
 	}
 
 	@Override
 	public boolean learnSkill(Skill skill) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	public boolean learnSkill(Skill skill, int level) {

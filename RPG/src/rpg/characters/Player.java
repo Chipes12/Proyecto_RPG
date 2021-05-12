@@ -1,6 +1,5 @@
 package rpg.characters;
 
-import java.util.List;
 import java.util.TreeMap;
 
 import rpg.items.*;
@@ -9,19 +8,18 @@ import rpg.specialities.*;
 public class Player extends Entity{
 	
 	private Bag bag = new Bag();
-	private static double sellRate = 0.80;
-	private static int minToSellRate = 20;  
-	private int xp = 0;
 	private PlayerClass playerClass = null;
 	private Armor armor;
+	private int xp = 0;
+	private static double sellRate = 0.80;
+	private static int minToSellRate = 20;  
 	
 	//Constructor
 	public Player(String name) {
 		super(name);
-		// TODO Auto-generated constructor stub
 	}
 	
-	//gettters
+	//Gettters
 	public Armor getArmor() {
 		return this.armor;
 	}
@@ -47,16 +45,18 @@ public class Player extends Entity{
 	}
 	
 	//Methods
-	public Item sellItem(Item item) {
-		if (!bag.getItems().containsKey(item)) return null;
+	public boolean sellItem(Item item) {
+		if (this.isInCombat() || !this.isAlive()) return false;
+		if (!bag.getItems().containsKey(item)) return false;
 		int money = item.getPrice(); 
 		if (money >= Player.minToSellRate) money = (int) (money*Player.sellRate);   
 		bag.deleteItem(item);
 		bag.setMoney(bag.getMoney() + money);
-		return item;
+		return false;
 	}
 	@Override
 	public boolean learnSkill(Skill skill) {
+		if (this.isInCombat() || !this.isAlive()) return false;
 		if(this.getLvl() >= skill.getMinLevel() && skill.isLearnable()) {
 			this.getSkills().put(skill, 1);
 			return true;
@@ -64,32 +64,35 @@ public class Player extends Entity{
 		return false;
 	}
 	public boolean equipItem(Item item) {
+		if (this.isInCombat() || !this.isAlive()) return false;
 		if(!(this.bag.getItems().containsKey(item))) return false;
 		if(item instanceof Armor) {
 			this.armor = (Armor) item;
 			return true;
 		}
-		Item[] prevItems = this.getEquipedItem();
+		Item[] prevItems = this.getEquippedItem();
 		Item[] newItems = new Item[2];
 		newItems[0] = item;
 		newItems[1] = prevItems[0];
-		this.setEquipedItem(newItems);
+		this.setEquippedItem(newItems);
 		return true;
 	}
 	public boolean unequipItem() {
-		Item[] prevItems = this.getEquipedItem();
-		Item[] newItems = new Item[2];
+		if (this.isInCombat() || !this.isAlive()) return false;
+		Item[] prevItems = this.getEquippedItem();
 		if(prevItems[0] == null && prevItems[1] == null) return false;
 		if(prevItems[0] != null && prevItems[1] == null) {
-			prevItems[1] = prevItems[0];
+			prevItems[1] = null;
 			prevItems[0] = null;
+			return true;
 		}
-		newItems[0] = null;
-		newItems[1] = prevItems[0];
-		this.setEquipedItem(newItems);
+		prevItems[0] = prevItems[1];
+		prevItems[1] = null;
+		this.setEquippedItem(prevItems);
 		return true;
 	}
 	public void chooseClass(PlayerClass pc) {
+		if (this.isInCombat() || !this.isAlive()) return;
 		if(this.playerClass == null) {
 			this.playerClass = pc;
 		}
@@ -107,6 +110,7 @@ public class Player extends Entity{
 		this.setXp(0);
 	}
 	public boolean useConsumable(Consumable cons) {
+		if (!this.isAlive()) return false;
 		if(!(this.bag.getItems().containsKey(cons))) return false;
 		cons.boostStasts(this);
 		bag.deleteItem(cons);

@@ -32,7 +32,7 @@ public abstract class Entity {
     	baseStats.put(Stats.defense, 0);
     }
     private boolean alive = true;
-    private Item[] equipedItem = new Item [2];
+    private Item[] equippedItem = new Item [2];
     private List<Entity> targets = new ArrayList<Entity>();
     
 	//Constructor
@@ -79,8 +79,8 @@ public abstract class Entity {
 	public boolean isAlive() {
 		return alive;
 	}
-	public Item[] getEquipedItem() {
-		return equipedItem;
+	public Item[] getEquippedItem() {
+		return equippedItem;
 	}
 	public List<Entity> getTargets() {
 		return targets;
@@ -104,10 +104,10 @@ public abstract class Entity {
 		if(name != null && name.strip() != "" && name.length() <= 20) this.name = name;
 	}
 	public void setHp(int hp) {
-		if(hp >= 0) this.hp = hp;
+		if(hp >= 0 && this.alive) this.hp = hp;
 	}
 	public void setMp(int mp) {
-		if(mp >= 0) this.mp = mp;
+		if(mp >= 0 && this.alive) this.mp = mp;
 	}
 	public void setLvl(int lvl) {
 		if(lvl >= 1) this.lvl = lvl;
@@ -127,8 +127,8 @@ public abstract class Entity {
 	public void setAlive(boolean alive) {
 		this.alive = alive;
 	}
-	public void setEquipedItem(Item[] equipedItem) {
-		this.equipedItem = equipedItem;
+	public void setEquippedItem(Item[] equipedItem) {
+		this.equippedItem = equipedItem;
 	}
 	public void setTargets(List<Entity> targets) {
 		if(targets.size()!= 0) this.targets = targets;
@@ -173,10 +173,11 @@ public abstract class Entity {
 		Entity nuevo = (Entity) obj;
 		if(!(nuevo.hp == this.hp && nuevo.mp == this.mp && nuevo.name == this.name && nuevo.lvl == this.lvl)) return false;
 		if(!(this.skills.equals(nuevo.skills) && this.stats.equals(nuevo.stats))) return false;
-		if(!(nuevo.alive == this.alive && this.equipedItem.equals(nuevo.equipedItem) && this.targets.equals(nuevo.targets))) return false;
+		if(!(nuevo.alive == this.alive && this.equippedItem.equals(nuevo.equippedItem) && this.targets.equals(nuevo.targets))) return false;
 		return true;
 	}
 	public void regen() {
+		if (!this.alive) return;
 		this.setMp(this.getMp() + Entity.regenRate);
 		if(this.isInCombat()) this.setHp(this.getHp() + Entity.regenRate);
 	}
