@@ -2,7 +2,6 @@ package rpg.characters;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
 
 import rpg.items.Item;
 import rpg.specialities.Skill;
@@ -10,13 +9,14 @@ import rpg.specialities.Skill;
 public class Enemy extends Entity{
 
 	private List<Item> itemDrop = new ArrayList<Item>();
-	private int xpDrop;
-	private int goldDrop;
+	private int xpDrop = 5;
+	private int goldDrop = 5;
 	
-	public Enemy(String name, int hp, int mp, int lvl, String status, TreeMap<Skill, Integer> skills, TreeMap<Stats, Integer> stats,
-			boolean alive, Item[] equipedItem, List<Entity> targets, List<Item> itemDrop, int xpDrop, int goldDrop) {
-		super(name, hp, mp, lvl, status, skills, stats, alive, equipedItem, targets);
+	//Constructor
+	public Enemy(String name, int lvl, List<Item> itemDrop, int xpDrop, int goldDrop) {
+		super(name);
 		// TODO Auto-generated constructor stub
+		this.setLvl(lvl);
 		this.setGoldDrop(goldDrop);
 		this.setXpDrop(xpDrop);
 		this.setItemDrop(itemDrop);
@@ -38,14 +38,34 @@ public class Enemy extends Entity{
 		this.itemDrop = itemDrop;
 	}
 	public void setXpDrop(int xpDrop) {
-		this.xpDrop = xpDrop;
+		if(xpDrop > 0) this.xpDrop = xpDrop;
 	}
 	public void setGoldDrop(int goldDrop) {
-		this.goldDrop = goldDrop;
+		if(goldDrop > 0) this.goldDrop = goldDrop;
 	}
 
+	//Methods
 	public Enemy clone() {
-		Enemy enemy = new Enemy(this.getName(), this.getHp(), this.getMp(), this.getLvl(), this.getStatus(), this.getSkills(), this.getStats(), this.isAlive(), this.getEquipedItem(), this.getTargets(), this.getItemDrop(), this.getXpDrop(), this.getGoldDrop());
+		Enemy enemy = new Enemy(this.getName(), this.getLvl(), this.getItemDrop(), this.getXpDrop(), this.getGoldDrop());
+		enemy.setAlive(this.isAlive());
+		enemy.setTargets(getTargets());
+		enemy.setHp(this.getHp());
+		enemy.setMp(this.getMp());
+		enemy.setEquipedItem(this.getEquipedItem());
+		enemy.setSkills(this.getSkills());
 		return enemy;
+	}
+
+	@Override
+	public boolean learnSkill(Skill skill) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	public boolean learnSkill(Skill skill, int level) {
+		if(this.getLvl() >= skill.getMinLevel()) {
+			this.getSkills().put(skill, level);
+			return true;
+		}
+		return false;
 	}
 }

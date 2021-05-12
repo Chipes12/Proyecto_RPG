@@ -9,17 +9,43 @@ import rpg.items.Item;
 public abstract class Entity {
 	
 	private String name;
-    private int hp;
-    private int mp;
+	private static int baseHp = 100;
+	private static int baseMp = 100;
+    private int hp = baseHp;
+    private int mp = baseMp;
     private int lvl = 1;
-    private String status;
+    private static TreeMap <Skill, Integer> baseSkills = new TreeMap<Skill, Integer>();
+    private static TreeMap <Stats, Integer> baseStats = new TreeMap<Stats, Integer>();
     private TreeMap <Skill, Integer> skills = new TreeMap<Skill, Integer>();
     private TreeMap <Stats, Integer> stats = new TreeMap<Stats, Integer>();
-    private boolean alive;
+    static {
+    	baseSkills.put(new Skill("Punch", 5, 0, 0, 1, true, null), 1);
+    	baseStats.put(Stats.max_hp, baseHp);
+    	baseStats.put(Stats.max_mp, baseMp);
+    	baseStats.put(Stats.strenght, 0);
+    	baseStats.put(Stats.intelligence, 0);
+    	baseStats.put(Stats.dexterity, 0);
+    	baseStats.put(Stats.constitution, 0);
+    	baseStats.put(Stats.defense, 0);
+    }
+    private boolean alive = true;
     private Item[] equipedItem = new Item [2];
     private List<Entity> targets = new ArrayList<Entity>();
     
+	//Constructor
+	public Entity(String name) {
+		this.setName(name);
+		this.skills.putAll(baseSkills);
+		this.stats.putAll(baseStats);
+	}
+    
     //Getters
+	public static int getBaseHp() {
+		return Entity.baseHp;
+	}
+	public static int getBaseMp() {
+		return Entity.baseMp;
+	}
     public String getName() {
     	return this.name;
     }
@@ -32,8 +58,11 @@ public abstract class Entity {
 	public int getLvl() {
 		return lvl;
 	}
-	public String getStatus() {
-		return status;
+	public static TreeMap<Skill, Integer> getBaseSkills(){
+		return Entity.baseSkills;
+	}
+	public static TreeMap<Stats, Integer> getBaseStats(){
+		return Entity.baseStats;
 	}
 	public TreeMap<Skill, Integer> getSkills() {
 		return skills;
@@ -53,6 +82,12 @@ public abstract class Entity {
 	
 	
 	//Setters con restricciones para que no existan numeros negativos o cadenas vacias
+	public static void setBaseHp(int baseHp) {
+		if(baseHp > 0) Entity.baseHp = baseHp;
+	}
+	public static void setBaseMp(int baseMp) {
+		if(baseMp > 0) Entity.baseHp = baseMp;
+	}
 	public void setName(String name) {
 		if(name != null && name.strip() != "" && name.length() <= 20) this.name = name;
 	}
@@ -65,10 +100,12 @@ public abstract class Entity {
 	public void setLvl(int lvl) {
 		if(lvl >= 1) this.lvl = lvl;
 	}
-	public void setStatus(String status) {
-		if(status != null && status.strip() != "" && status.length() <= 20) this.status = status;
+	public static void setBaseSkills(TreeMap<Skill, Integer> baseSkills) {
+		if(baseSkills.size() != 0) Entity.baseSkills = baseSkills;
 	}
-
+	public static void setBaseStats(TreeMap<Stats, Integer> baseStats) {
+		if(baseSkills.size() == 7) Entity.baseStats = baseStats;
+	}
 	public void setSkills(TreeMap<Skill, Integer> skills) {
 		if(skills.size() != 0) this.skills = skills;
 	}
@@ -85,32 +122,7 @@ public abstract class Entity {
 		if(targets.size()!= 0) this.targets = targets;
 	}
 	
-	
-	//Constructor
-	public Entity(String name, int hp, int mp, int lvl, String status, TreeMap<Skill, Integer> skills, TreeMap<Stats, Integer> stats,
-			boolean alive, Item[] equipedItem, List<Entity> targets) {
-		this.name = name;
-		this.hp = hp;
-		this.mp = mp;
-		this.lvl = lvl;
-		this.status = status;
-		this.skills = skills;
-		this.stats = stats;
-		this.alive = alive;
-		this.equipedItem = equipedItem;
-		this.targets = targets;
-	}
-
-	
-	//LearnSkill por analizar
-	public boolean learnSkill(Skill skill) {
-		if(this.lvl >= skill.getMinLevel() && skill.isLearnable()) {
-			this.skills.put(skill, 1);
-			return true;
-		}
-		return false;
-	}
-	
+	//Methods
 	public void die() {
 		if(this.hp == 0 && this.isAlive()) this.alive = false;
 	}
@@ -147,8 +159,10 @@ public abstract class Entity {
 		if(!(obj instanceof Entity)) return false;
 		Entity nuevo = (Entity) obj;
 		if(!(nuevo.hp == this.hp && nuevo.mp == this.mp && nuevo.name == this.name && nuevo.lvl == this.lvl)) return false;
-		if(!(nuevo.status == this.status && this.skills.equals(nuevo.skills) && this.stats.equals(nuevo.stats))) return false;
+		if(!(this.skills.equals(nuevo.skills) && this.stats.equals(nuevo.stats))) return false;
 		if(!(nuevo.alive == this.alive && this.equipedItem.equals(nuevo.equipedItem) && this.targets.equals(nuevo.targets))) return false;
 		return true;
-	}	
+	}
+	public abstract boolean learnSkill(Skill skill);
+	
 }

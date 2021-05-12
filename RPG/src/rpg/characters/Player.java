@@ -1,26 +1,24 @@
 package rpg.characters;
 
 import java.util.List;
-import java.util.TreeMap;
 
 import rpg.items.*;
 import rpg.specialities.*;
 
 public class Player extends Entity{
 	
-	//Para Después
-	public Player(String name, int hp, int mp, int lvl, String status, TreeMap<Skill, Integer> skills, TreeMap<Stats, Integer> stats,
-			boolean alive, Item[] equipedItem, List<Entity> targets) {
-		super(name, hp, mp, lvl, status, skills, stats, alive, equipedItem, targets);
-		// TODO Auto-generated constructor stub
-	}
-
 	private Bag bag = new Bag();
 	private static double sellRate = 0.80;
 	private static int minToSellRate = 20;  
 	private int xp = 0;
 	private PlayerClass playerClass;
 	private Armor armor;
+	
+	//Constructor
+	public Player(String name) {
+		super(name);
+		// TODO Auto-generated constructor stub
+	}
 	
 	//gettters
 	public static double getSellRate() {
@@ -44,7 +42,7 @@ public class Player extends Entity{
 		if(xp >= 0) this.xp = xp;
 	}
 	
-	//Metodos
+	//Methods
 	public Item sellItem(Item item) {
 		if (!bag.getItems().containsKey(item)) return null;
 		int money = item.getPrice(); 
@@ -53,5 +51,13 @@ public class Player extends Entity{
 		bag.setMoney(bag.getMoney() + money);
 		return item;
 	}
-
+	
+	@Override
+	public boolean learnSkill(Skill skill) {
+		if(this.getLvl() >= skill.getMinLevel() && skill.isLearnable()) {
+			this.getSkills().put(skill, 1);
+			return true;
+		}
+		return false;
+	}
 }

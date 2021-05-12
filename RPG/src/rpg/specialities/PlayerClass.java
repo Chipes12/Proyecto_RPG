@@ -12,9 +12,9 @@ public class PlayerClass {
 	
 	//Constructor
 	public PlayerClass(String name, TreeSet<Skill> skills, TreeMap<Stats, Integer> statModifiers) {
-		this.name = name;
-		this.skills = skills;
-		this.statModifiers = statModifiers;
+		this.setName(name);
+		this.setSkills(skills);
+		this.setStatModifiers(statModifiers);
 	}
 	
 	//Getters

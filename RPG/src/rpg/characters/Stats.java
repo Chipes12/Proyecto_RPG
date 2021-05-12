@@ -4,8 +4,8 @@ public enum Stats{
 	max_hp,
 	max_mp,
 	strenght,
-	inteligence,
+	intelligence,
 	dexterity,
 	constitution,
-	armorclass;
+	defense;
 }
