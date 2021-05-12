@@ -7,7 +7,6 @@ public class Skill implements Comparable<Skill>{
 	private int damage = 0;
 	private int magicDamage = 0;
 	private int mpCost = 0;
-	private int level = 1; //No aparece en constructor porque siempre se inicia en nivel
 	private int minLevel = 1;
 	private boolean learnable = true;
 	private WeaponEnum weaponType;
@@ -24,9 +23,6 @@ public class Skill implements Comparable<Skill>{
 	}
 	public int getMpCost() {
 		return mpCost;
-	}
-	public int getLevel() {
-		return level;
 	}
 	public int getMinLevel() {
 		return minLevel;
@@ -47,11 +43,6 @@ public class Skill implements Comparable<Skill>{
 	}
 	public void setMagicDamage(int magicDamage) {
 		if(this.magicDamage >= 0) this.magicDamage = magicDamage;
-	}
-	public void setLevel(int level) {
-		if(this.level + 1 == level) {
-			this.level = level;
-		}
 	}
 	public void setMpCost(int mpCost) {
 		if(mpCost >= 0) this.mpCost = mpCost;
@@ -90,7 +81,6 @@ public class Skill implements Comparable<Skill>{
 	//String completo tiene toda la información de la skill
 	public String toStringDetails() {
 		String str = this.toString() + "\n";
-		str += "Level: " + this.getLevel() + "\n";
 		str += "Mp Cost: " + this.getMpCost() + "\n";
 		str += "Min level: " + this.getMinLevel() + "\n";
 		str += "Needed weapon type: " + this.getWeaponType() + "\n";
