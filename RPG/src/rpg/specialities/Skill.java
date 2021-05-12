@@ -2,6 +2,13 @@ package rpg.specialities;
 import rpg.items.Weapon.WeaponEnum; 
 
 public class Skill implements Comparable<Skill>{
+	
+	//Identifica capacidades de un skill según su tipo
+	public enum SkillEnum{
+		ATTACK,
+		DEFENSE,
+		HEAL;
+	}
 	//Atributos default
 	private String name = "";
 	private int damage = 0;
@@ -10,6 +17,20 @@ public class Skill implements Comparable<Skill>{
 	private int minLevel = 1;
 	private boolean learnable = true;
 	private WeaponEnum weaponType;
+	private SkillEnum skillType;
+	
+	//Constructor de una habilidad con todos sus atributos menos el nivel que en un inicio es 1
+	public Skill(String name, int damage, int magicDamage, int mpCost, int minLevel, boolean learnable,
+			WeaponEnum weaponType, SkillEnum skillType) {
+		this.setName(name);
+		this.setDamage(damage);
+		this.setMagicDamage(magicDamage);
+		this.setMpCost(mpCost);
+		this.setMinLevel(minLevel);
+		this.setLearnable(learnable);
+		this.setWeaponType(weaponType);
+		this.setSkillType(skillType);
+	}
 	
 	//Getters
 	public String getName() {
@@ -33,6 +54,9 @@ public class Skill implements Comparable<Skill>{
 	public WeaponEnum getWeaponType() {
 		return weaponType;
 	}
+	public SkillEnum getSkillType() {
+		return skillType;
+	}
 	
 	//Setters con condiciones para que no haya cadenas vacias ni numeros menores a 0
 	public void setName(String name) {
@@ -54,27 +78,17 @@ public class Skill implements Comparable<Skill>{
 		this.learnable = learnable;
 	}
 	public void setWeaponType(WeaponEnum weaponType) {
-		if (weaponType == null) {
-			this.weaponType = null;
-			return;
-		}
 		if(weaponType.ordinal() >= WeaponEnum.MELEE.ordinal() && weaponType.ordinal() <= WeaponEnum.NONE.ordinal()) {
 			this.weaponType = weaponType;
 		}
 	}
-	
-	//Constructor de una habilidad con todos sus atributos menos el nivel que en un inicio es 1
-	public Skill(String name, int damage, int magicDamage, int mpCost, int minLevel, boolean learnable,
-			WeaponEnum weaponType) {
-		this.setName(name);
-		this.setDamage(damage);
-		this.setMagicDamage(magicDamage);
-		this.setMpCost(mpCost);
-		this.setMinLevel(minLevel);
-		this.setLearnable(learnable);
-		this.setWeaponType(weaponType);
+	private void setSkillType(SkillEnum skillType) {
+		if(skillType.ordinal() >= SkillEnum.ATTACK.ordinal() && skillType.ordinal() <= SkillEnum.HEAL.ordinal()) {
+			this.skillType = skillType;
+		}
 	}
-	
+
+	//Methods
 	//String sencillo aparecen sus daños y su nombre
 	public String toString() {
 		String str = this.getName() + "\t";
