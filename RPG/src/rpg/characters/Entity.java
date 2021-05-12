@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.TreeMap;
 import rpg.specialities.Skill;
 import rpg.items.Item;
+import rpg.items.Weapon.WeaponEnum;
 
 public abstract class Entity {
 	
@@ -19,7 +20,7 @@ public abstract class Entity {
     private TreeMap <Skill, Integer> skills = new TreeMap<Skill, Integer>();
     private TreeMap <Stats, Integer> stats = new TreeMap<Stats, Integer>();
     static {
-    	baseSkills.put(new Skill("Punch", 5, 0, 0, 1, true, null), 1);
+    	baseSkills.put(new Skill("Punch", 5, 0, 0, 1, true, WeaponEnum.NONE), 1);
     	baseStats.put(Stats.max_hp, baseHp);
     	baseStats.put(Stats.max_mp, baseMp);
     	baseStats.put(Stats.strenght, 0);

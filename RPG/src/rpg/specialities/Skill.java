@@ -54,7 +54,7 @@ public class Skill implements Comparable<Skill>{
 		this.learnable = learnable;
 	}
 	public void setWeaponType(WeaponEnum weaponType) {
-		if(weaponType.ordinal() >= WeaponEnum.MELEE.ordinal() && weaponType.ordinal() <= WeaponEnum.MAGICMELEE.ordinal()) {
+		if(weaponType.ordinal() >= WeaponEnum.MELEE.ordinal() && weaponType.ordinal() <= WeaponEnum.NONE.ordinal()) {
 			this.weaponType = weaponType;
 		}
 	}

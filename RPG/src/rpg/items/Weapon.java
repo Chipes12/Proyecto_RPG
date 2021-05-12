@@ -7,8 +7,8 @@ public class Weapon extends Item{
 		RANGE,
 		SHIELD,
 		MAGICRANGE,
-		MAGICMELEE;
-
+		MAGICMELEE,
+		NONE;
 	}
 	//Atributos default
 	private int attack = 0;
@@ -46,7 +46,7 @@ public class Weapon extends Item{
 		if(defense > 0)	this.defense = defense;
 	}
 	public void setType(WeaponEnum type) {
-		if(type.ordinal() >= WeaponEnum.MELEE.ordinal() && type.ordinal() <= WeaponEnum.MAGICMELEE.ordinal()) {
+		if(type.ordinal() >= WeaponEnum.MELEE.ordinal() && type.ordinal() <= WeaponEnum.NONE.ordinal()) {
 			this.type = type;
 		}
 	}
