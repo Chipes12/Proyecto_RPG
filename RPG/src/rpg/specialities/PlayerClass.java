@@ -17,6 +17,20 @@ public class PlayerClass {
 		this.setStatModifiers(statModifiers);
 	}
 	
+	public PlayerClass(String name, TreeSet<Skill> skills, int hp, int mp, int str, int inte, int dex, int con, int def) {
+		this.setName(name);
+		this.setSkills(skills);
+		TreeMap<Stats, Integer> temp = new TreeMap<Stats,Integer>();
+		temp.put(Stats.max_hp, hp);
+		temp.put(Stats.max_mp, mp);
+		temp.put(Stats.strength, str);
+		temp.put(Stats.intelligence, inte);
+		temp.put(Stats.dexterity, dex);
+		temp.put(Stats.constitution, con);
+		temp.put(Stats.defense, def);
+		this.setStatModifiers(temp);
+	}
+	
 	//Getters
 	public String getName() {
 		return name;

@@ -108,7 +108,7 @@ public class Consumable extends Item{
 		return str;
 	}
 	
-	public void boostStasts(Player player) {
+	public void boostStasts(Player<?> player) {
 		TreeMap <Stats, Integer> pStats = player.getStats();
 		Stats[] pStatsA = pStats.keySet().toArray(new Stats[7]);
 		
@@ -116,7 +116,7 @@ public class Consumable extends Item{
 			pStats.put(pStatsA[i], pStats.get(pStatsA[i]) + this.boostedStats.get(pStatsA[i]));
 	}
 	
-	public void unboostStasts(Player player) {
+	public void unboostStasts(Player<?> player) {
 		TreeMap <Stats, Integer> pStats = player.getStats();
 		Stats[] pStatsA = pStats.keySet().toArray(new Stats[7]);
 		
