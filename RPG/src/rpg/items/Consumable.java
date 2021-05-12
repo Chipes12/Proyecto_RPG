@@ -7,9 +7,43 @@ import rpg.characters.Player;
 public class Consumable extends Item{
 
 	private int healAmount;
-	private TreeMap<Stats, Integer> boostedStats = new TreeMap<>();
-	private int duration;
+	private TreeMap<Stats, Integer> boostedStats = new TreeMap<Stats,Integer>();
+	private boolean durationLimit = true;
+	private static long baseDuration = 1000;
+	private long duration = baseDuration;
 	private final static String itemType = "Consumable";
+	
+	//Constructor
+	public Consumable(String name, int price, int level) {
+		super(name,price,level);
+		TreeMap<Stats, Integer> temp = new TreeMap<Stats,Integer>();
+		temp.put(Stats.max_hp, 0);
+		temp.put(Stats.max_mp, 0);
+		temp.put(Stats.strength, 0);
+		temp.put(Stats.intelligence, 0);
+		temp.put(Stats.dexterity, 0);
+		temp.put(Stats.constitution, 0);
+		temp.put(Stats.defense, 0);
+		this.setBoostedStasts(temp);
+	}
+	
+	public Consumable(String name, int price, int level, TreeMap<Stats, Integer> boostedStats) {
+		super(name, price, level);
+		this.setBoostedStasts(boostedStats);
+	}
+	
+	public Consumable(String name, int price, int level, int hp, int mp, int str, int inte, int dex, int con, int def) {
+		super(name, price, level);
+		TreeMap<Stats, Integer> temp = new TreeMap<Stats,Integer>();
+		temp.put(Stats.max_hp, hp);
+		temp.put(Stats.max_mp, mp);
+		temp.put(Stats.strength, str);
+		temp.put(Stats.intelligence, inte);
+		temp.put(Stats.dexterity, dex);
+		temp.put(Stats.constitution, con);
+		temp.put(Stats.defense, def);
+		this.setBoostedStasts(temp);
+	}
 	
 	//Getters
  	public int getHealAmount() {
@@ -18,10 +52,15 @@ public class Consumable extends Item{
 	public TreeMap<Stats, Integer> getBoostedStats(){
 		return this.boostedStats;
 	}
-	public int getDuration() {
+	public long getDuration() {
 		return this.duration;
 	}
-	
+	public boolean hasTimeLimit() {
+		return this.durationLimit;
+	}
+	public int getBaseDuration() {
+		return this.getBaseDuration();
+	}
 	//Setters
 	public void setHealAmount(int healAmount) {
 		if(healAmount >= 0) this.healAmount = healAmount;
@@ -30,7 +69,13 @@ public class Consumable extends Item{
 		if(boostedStats.size()==7) this.boostedStats = boostedStats;
 	}
 	public void setDuration(int duration) {
-		if(duration >= 0)this.duration = duration;
+		if(duration >= 0) this.duration = duration;
+	}
+	public void setTimeLimit(boolean durationLimit) {
+		this.durationLimit = durationLimit;
+	}
+	public void setBaseDuration(long baseDuration) {
+		Consumable.baseDuration = baseDuration;
 	}
 	
 	//Constructor
@@ -71,5 +116,12 @@ public class Consumable extends Item{
 			pStats.put(pStatsA[i], pStats.get(pStatsA[i]) + this.boostedStats.get(pStatsA[i]));
 	}
 	
+	public void unboostStasts(Player player) {
+		TreeMap <Stats, Integer> pStats = player.getStats();
+		Stats[] pStatsA = pStats.keySet().toArray(new Stats[7]);
+		
+		for(int i = 0; i < 7; i++)
+			pStats.put(pStatsA[i], pStats.get(pStatsA[i]) - this.boostedStats.get(pStatsA[i]));
+	}
 	
 }
