@@ -33,6 +33,7 @@ public class Armor extends Item {
 	//Compara si son iguales desde super y verifica mismo valor de armorClass
 	@Override
 	public boolean equals(Item i) {
+		if(!(i instanceof Armor)) return false;
 		Armor a = (Armor) i; 
 		return super.equals(i) && this.getArmorClass() == a.getArmorClass();
 	}

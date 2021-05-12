@@ -81,6 +81,7 @@ public class Weapon extends Item{
 	
 	@Override
 	public boolean equals(Item i) {
+		if(!(i instanceof Weapon)) return false;
 		Weapon a = (Weapon) i;
 		return super.equals(i) && a.getAttack() == this.getAttack() && a.getDefense() == this.getDefense() && a.getMagicAttack() == this.getMagicAttack() && this.getType() == a.getType(); 
 	}
