@@ -73,7 +73,7 @@ public abstract class Entity {
 		if(skills.size() != 0) this.skills = skills;
 	}
 	public void setStats(TreeMap<Stats, Integer> stats) {
-		if(stats.size() != 0) this.stats = stats;
+		if(stats.size() == 7) this.stats = stats;
 	}
 	public void setAlive(boolean alive) {
 		this.alive = alive;
