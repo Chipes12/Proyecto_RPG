@@ -1,6 +1,7 @@
 package rpg.characters;
 
 import java.util.List;
+import java.util.TreeMap;
 
 import rpg.items.*;
 import rpg.specialities.*;
@@ -11,7 +12,7 @@ public class Player extends Entity{
 	private static double sellRate = 0.80;
 	private static int minToSellRate = 20;  
 	private int xp = 0;
-	private PlayerClass playerClass;
+	private PlayerClass playerClass = null;
 	private Armor armor;
 	
 	//Constructor
@@ -51,7 +52,6 @@ public class Player extends Entity{
 		bag.setMoney(bag.getMoney() + money);
 		return item;
 	}
-	
 	@Override
 	public boolean learnSkill(Skill skill) {
 		if(this.getLvl() >= skill.getMinLevel() && skill.isLearnable()) {
@@ -59,5 +59,48 @@ public class Player extends Entity{
 			return true;
 		}
 		return false;
+	}
+	public boolean equipItem(Item item) {
+		if(!(this.bag.getItems().containsKey(item))) return false;
+		if(item instanceof Armor) {
+			this.armor = (Armor) item;
+			return true;
+		}
+		Item[] prevItems = this.getEquipedItem();
+		Item[] newItems = new Item[2];
+		newItems[0] = item;
+		newItems[1] = prevItems[0];
+		this.setEquipedItem(newItems);
+		return true;
+	}
+	public boolean unequipItem() {
+		Item[] prevItems = this.getEquipedItem();
+		Item[] newItems = new Item[2];
+		if(prevItems[0] == null && prevItems[1] == null) return false;
+		if(prevItems[0] != null && prevItems[1] == null) {
+			prevItems[1] = prevItems[0];
+			prevItems[0] = null;
+		}
+		newItems[0] = null;
+		newItems[1] = prevItems[0];
+		this.setEquipedItem(newItems);
+		return true;
+	}
+	public void chooseClass(PlayerClass pc) {
+		if(this.playerClass == null) {
+			this.playerClass = pc;
+		}
+	}
+	public void revive() {
+		if(this.getHp() == 0 && this.isAlive() == false) {
+			TreeMap <Stats, Integer> pStats = this.getStats();
+			Stats[] pStatsA = pStats.keySet().toArray(new Stats[7]);
+			this.setHp(pStats.get(pStatsA[0])/2);
+			this.setMp(pStats.get(pStatsA[1])/2);		
+		}
+	}
+	public void die() {
+		if(this.getHp() == 0 && this.isAlive()) this.setAlive(false);
+		this.setXp(0);
 	}
 }

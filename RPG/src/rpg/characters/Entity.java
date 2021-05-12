@@ -10,8 +10,10 @@ import rpg.items.Weapon.WeaponEnum;
 public abstract class Entity {
 	
 	private String name;
-	private static int baseHp = 100;
+	private static int regenRate = 10;
+	static int baseHp = 100;
 	private static int baseMp = 100;
+	private boolean inCombat = false;
     private int hp = baseHp;
     private int mp = baseMp;
     private int lvl = 1;
@@ -41,6 +43,9 @@ public abstract class Entity {
 	}
     
     //Getters
+	public static int getRegenRate() {
+		return Entity.regenRate;
+	}
 	public static int getBaseHp() {
 		return Entity.baseHp;
 	}
@@ -80,9 +85,15 @@ public abstract class Entity {
 	public List<Entity> getTargets() {
 		return targets;
 	}
+	public boolean isInCombat() {
+		return this.inCombat;
+	}
 	
 	
 	//Setters con restricciones para que no existan numeros negativos o cadenas vacias
+	public static void setRegenRate(int regenRate) {
+		if(regenRate >= 0) Entity.regenRate = regenRate;
+	}
 	public static void setBaseHp(int baseHp) {
 		if(baseHp > 0) Entity.baseHp = baseHp;
 	}
@@ -122,17 +133,19 @@ public abstract class Entity {
 	public void setTargets(List<Entity> targets) {
 		if(targets.size()!= 0) this.targets = targets;
 	}
+	public void setInCombat(boolean inCombat) {
+		this.inCombat = inCombat;
+	}
 	
 	//Methods
 	public void die() {
-		if(this.hp == 0 && this.isAlive()) this.alive = false;
+		if(this.getHp() == 0 && this.isAlive()) this.setAlive(false);
 	}
 	public String toString() {
 		String str = "Name: " + this.getName() + "\n";
 		str += "Level: " + this.getLvl() + "\nHP: " + this.getHp() + "\tMP: " + this.getMp();
 		return str;
 	}
-	
 	public String toStringDetails() {
 		String str = this.toString() + "\nStats: \n\n";
 		String strStats = this.getStats().toString();
@@ -155,7 +168,6 @@ public abstract class Entity {
 		else str += "State: Dead";
 		return str;
 	}
-	
 	public boolean equals(Object obj) {
 		if(!(obj instanceof Entity)) return false;
 		Entity nuevo = (Entity) obj;
@@ -164,6 +176,12 @@ public abstract class Entity {
 		if(!(nuevo.alive == this.alive && this.equipedItem.equals(nuevo.equipedItem) && this.targets.equals(nuevo.targets))) return false;
 		return true;
 	}
+	public void regen() {
+		this.setMp(this.getMp() + Entity.regenRate);
+		if(this.isInCombat()) this.setHp(this.getHp() + Entity.regenRate);
+	}
 	public abstract boolean learnSkill(Skill skill);
+	
+	
 	
 }
