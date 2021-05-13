@@ -133,8 +133,8 @@ public class RPGBot {
 		Player p1 = new Player("Chipes");
 		Player p2 = new Player("Gyuunto");
 		
-		juego.addPlayer(p1, 1);
-		juego.addPlayer(p2, 2);
+		juego.addPlayer(p1);
+		juego.addPlayer(p2);
 		
 		//Tienda
 		Shop shop = new Shop(juego);
@@ -150,6 +150,24 @@ public class RPGBot {
 		shop.addItem(c2);
 		shop.addItem(c3);
 		
+		System.out.println("\n\n#####SHOP#####\n");
+		System.out.println(shop.toString());
 		
+		System.out.println("\n\n#####ITEMS#####\n");
+		for (Item i: juego.getItems()) {
+			System.out.println(i.toString());
+		}
+		System.out.println("\n\n#####PLAYERS#####\n");
+		for (Player i: juego.getPlayers()) {
+			System.out.println(i.toString());
+		}
+		System.out.println("\n\n#####ENEMIES#####\n");
+		for (Enemy i: juego.getEnemies()) {
+			System.out.println(i.toString());
+		}
+		System.out.println("\n\n#####CLASSES#####\n");
+		for (PlayerClass i: juego.getClasses()) {
+			System.out.println(i.toString());
+		}
 	}
 }

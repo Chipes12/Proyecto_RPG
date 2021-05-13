@@ -12,10 +12,10 @@ import rpg.specialities.Skill.SkillEnum;
 
 public abstract class RPG <T>{
 	private Shop shop;
-	private TreeMap <Player, T> players = new TreeMap<Player, T>();
+	private List <Player> players = new ArrayList<Player>();
 	private List <Enemy> enemies = new ArrayList<Enemy>();
 	private TreeSet <Item> items = new TreeSet<Item>();
-	private TreeSet <PlayerClass> classes = new TreeSet<PlayerClass>();
+	private List <PlayerClass> classes = new ArrayList<PlayerClass>();
 	private TreeSet <Skill> skills = new TreeSet <Skill>();
 	private List <Encounter> encounters = new ArrayList <Encounter>();
 	private Encounter currentEncounter;
@@ -31,7 +31,7 @@ public abstract class RPG <T>{
 		if (shop != null) this.shop = shop;
 	}
 	
-	public void setPlayers(TreeMap<Player, T> players) {
+	public void setPlayers(List<Player> players) {
 		if (players != null) this.players = players;
 	}
 	
@@ -43,7 +43,7 @@ public abstract class RPG <T>{
 		if (items != null) this.items = items;
 	}
 	
-	public void setClasses(TreeSet<PlayerClass> classes) {
+	public void setClasses(List<PlayerClass> classes) {
 		if (classes != null) this.classes = classes;
 	}
 	
@@ -64,7 +64,7 @@ public abstract class RPG <T>{
 		return this.shop;
 	}
 
-	public TreeMap<Player, T> getPlayers() {
+	public List<Player> getPlayers() {
 		return players;
 	}
 
@@ -76,7 +76,7 @@ public abstract class RPG <T>{
 		return items;
 	}
 
-	public TreeSet<PlayerClass> getClasses() {
+	public List<PlayerClass> getClasses() {
 		return classes;
 	}
 
@@ -93,8 +93,8 @@ public abstract class RPG <T>{
 	}
 	
 	//Methods
-	public void addPlayer(Player player, T iD) {
-		if (player != null) this.players.put(player, iD);
+	public void addPlayer(Player player) {
+		if (player != null) this.players.add(player);
 	}
 	
 	public void addEnemy(Enemy enemy) {
