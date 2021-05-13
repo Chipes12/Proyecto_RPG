@@ -12,7 +12,7 @@ import rpg.specialities.Skill.SkillEnum;
 
 public abstract class RPG <T>{
 	private Shop shop;
-	private TreeMap <Player, T> players = new TreeMap<Player, T>();
+	private TreeMap <T, Player> players = new TreeMap<T, Player>();
 	private List <Enemy> enemies = new ArrayList<Enemy>();
 	private TreeSet <Item> items = new TreeSet<Item>();
 	private TreeSet<PlayerClass> classes = new TreeSet<PlayerClass>();
@@ -34,7 +34,7 @@ public abstract class RPG <T>{
 		}
 	}
 	
-	public void setPlayers(TreeMap<Player, T> players) {
+	public void setPlayers(TreeMap<T, Player> players) {
 		if (players != null) this.players = players;
 	}
 	
@@ -67,7 +67,7 @@ public abstract class RPG <T>{
 		return this.shop;
 	}
 
-	public TreeMap<Player, T> getPlayers() {
+	public TreeMap<T, Player> getPlayers() {
 		return players;
 	}
 
@@ -101,7 +101,7 @@ public abstract class RPG <T>{
 	
 	//Methods
 	public void addPlayer(Player player, T iD) {
-		if (player != null) this.players.put(player, iD);
+		if (player != null) this.players.put(iD, player);
 	}
 	
 	public void addEnemy(Enemy enemy) {
@@ -154,10 +154,10 @@ public abstract class RPG <T>{
 	
 	public String toStringPlayers() {
 		String str = "";
-		Player[] playersA = this.players.keySet().toArray(new Player[this.players.size()]);
-		for (Player i: playersA) {
-			str += "ID: " + this.players.get(i) + "\n";
-			str += i.toString() + "\n\n";
+		Object[] playersA = this.players.keySet().toArray(new Object[this.players.size()]);
+		for (Object i: playersA) {
+			str += "ID: " + i.toString() + "\n";
+			str += this.players.get(i)  + "\n\n";
 		}	
 		return str;
 	}

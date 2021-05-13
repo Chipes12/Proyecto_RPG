@@ -1,8 +1,11 @@
 package bot;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.TreeSet;
+
+import javax.security.auth.login.LoginException;
 
 import rpg.*;
 import rpg.characters.Enemy;
@@ -19,10 +22,19 @@ import rpg.specialities.Skill;
 import rpg.specialities.Skill.SkillEnum;
 
 public class RPGBot {
+	public static Bot bot;
+	public static void main(String[] args) throws IOException {
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		RPG<Integer> juego = new RPG<Integer>() {
+
+        try {
+            bot = new Bot("!", "An RPG Bot!");
+        } catch (LoginException e) {
+            e.printStackTrace();
+        }
+
+		
+		
+		RPG<Long> juego = new RPG<Long>() {
 		};
 		//Habilidades
 		Skill sk1_1 = new Skill("Corte", 10, 0, 5, 1, true, WeaponEnum.MELEE, SkillEnum.ATTACK);
@@ -133,8 +145,8 @@ public class RPGBot {
 		Player p1 = new Player("Chipes");
 		Player p2 = new Player("Gyuunto");
 		
-		juego.addPlayer(p1);
-		juego.addPlayer(p2);
+		juego.addPlayer(p1,1L);
+		juego.addPlayer(p2,2L);
 		
 		//Tienda
 		Shop shop = new Shop(juego);
@@ -150,24 +162,32 @@ public class RPGBot {
 		shop.addItem(c2);
 		shop.addItem(c3);
 		
-		System.out.println("\n\n#####SHOP#####\n");
-		System.out.println(shop.toString());
+		List <Enemy> enc1Enemies = new ArrayList <Enemy>();
+        enc1Enemies.add(juego.getEnemies().get(2));
+        enc1Enemies.add(juego.getEnemies().get(2).clone());
+        enc1Enemies.add(juego.getEnemies().get(2).clone());
+
+        //Stream.generate(ArrayList<Enemy>::new).limit(10).collect(Collectors.toList());
+
+        juego.addEncounter(enc1Enemies);
+
+        System.out.println("\n#####SHOP#####\n");
+        System.out.println(juego.getShop().toString());
+
+        System.out.println("\n#####ITEMS#####\n");
+        System.out.println(juego.toStringItems());
+
+        System.out.println("\n#####PLAYERS#####\n");
+        System.out.println(juego.toStringPlayers());
+
+        System.out.println("\n#####ENEMIES#####\n");
+        System.out.println(juego.toStringEnemies());
+
+        System.out.println("\n#####CLASSES#####\n");
+        System.out.println(juego.toStringClasses());
+
+        System.out.println("\n#####ENCOUNTERS#####\n");
+        System.out.println(juego.toStringEncounters());
 		
-		System.out.println("\n\n#####ITEMS#####\n");
-		for (Item i: juego.getItems()) {
-			System.out.println(i.toString());
-		}
-		System.out.println("\n\n#####PLAYERS#####\n");
-		for (Player i: juego.getPlayers()) {
-			System.out.println(i.toString());
-		}
-		System.out.println("\n\n#####ENEMIES#####\n");
-		for (Enemy i: juego.getEnemies()) {
-			System.out.println(i.toString());
-		}
-		System.out.println("\n\n#####CLASSES#####\n");
-		for (PlayerClass i: juego.getClasses()) {
-			System.out.println(i.toString());
-		}
 	}
 }
