@@ -2,7 +2,6 @@ package rpg.characters;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.TreeMap;
 import rpg.specialities.Skill;
 import rpg.specialities.Skill.SkillEnum;
@@ -200,12 +199,13 @@ public abstract class Entity implements Combat{
 	public abstract boolean learnSkill(Skill skill);
 	
 	@Override
-	public boolean attack(Skill skill) {
+	public int attack(Skill skill, List<Entity> ptargets) {
 		int totalDamage = 0;
 		boolean isAvaliable = false;
 		totalDamage += this.getStats().get(Stats.strength);
-		if(skill.getSkillType() != Skill.SkillEnum.ATTACK) return false;
-		
+		if(skill.getSkillType() != Skill.SkillEnum.ATTACK) return 0;
+		if(this.getMp() < skill.getMpCost()) return 0;
+				
 		if(this.getEquippedItem()[0] != null) {
 			if(this.getEquippedItem()[0].getItemType() == "Weapon") {
 				Weapon w1 = (Weapon) this.getEquippedItem()[0];
@@ -226,43 +226,74 @@ public abstract class Entity implements Combat{
 		}
 		if(isAvaliable) {
 			totalDamage += (skill.getDamage() + skill.getMagicDamage()) * this.getSkills().get(skill);
+			this.setMp(this.getMp() - skill.getMpCost());
+			return totalDamage;
 		}else {
-			return false;
+			return 0;
 		}
 		
-		Random i = new Random();
 		
-		int numTargets = i.nextInt(skill.getMaxTargets())+1;
-		int tSize = this.getTargets().size();
-		if (numTargets-tSize > 0) numTargets = tSize;
-		Player target;
-		int random, defense = 0;
-		for (int t=0; t<numTargets; t++) {
-			defense = 0;
-			random = i.nextInt(this.getTargets().size());
-			if(this.getTargets().get(random).getClass() != this.getClass()) {
-				target = (Player) this.getTargets().get(random);
-				defense += target.getStats().get(Stats.defense);
-				defense += target.getArmor().getArmorClass();
-				if (! target.isShielded()) 
-					target.setHp(totalDamage - defense);
-		
-				target.setShielded(false);
-			} 
-		}
-		return true;
 	}
 
 	@Override
 	public boolean defend(Skill skill) {
-		return alive;
-		// TODO Auto-generated method stub
+		if(this.getMp() < skill.getMpCost()) return false;
+		if(skill.getSkillType() != Skill.SkillEnum.DEFENSE) return false;
+		if(this.getMp() < skill.getMpCost()) return false;
+		if(this.getEquippedItem()[0] != null) {
+			if(this.getEquippedItem()[0].getItemType() == "Weapon") {
+				Weapon w1 = (Weapon) this.getEquippedItem()[0];
+				if(w1.getType() == WeaponEnum.SHIELD) {
+					this.setShielded(true);
+				}
+			}
+		}
+		if(this.getEquippedItem()[1] != null) {
+			if(this.getEquippedItem()[1].getItemType() == "Weapon") {
+				Weapon w1 = (Weapon) this.getEquippedItem()[1];
+				if(w1.getType() == WeaponEnum.SHIELD) {
+					this.setShielded(true);
+				}
+			}
+		}
+		this.setMp(this.getMp() - skill.getMpCost());
+		return true;
+		
 	}
 
 	@Override
-	public boolean heal(Skill skill) {
-		return alive;
+	public int heal(Skill skill) {
 		// TODO Auto-generated method stub
-		
+		boolean healing = false;
+		int totalHealing = 0;
+		if(skill.getSkillType() != Skill.SkillEnum.HEAL) return 0;
+		if(this.getMp() >= skill.getMpCost()) {
+			if(this.getEquippedItem()[0] != null) {
+				if(this.getEquippedItem()[0].getItemType() == "Weapon") {
+					Weapon w1 = (Weapon) this.getEquippedItem()[0];
+					if(w1.getType() == skill.getWeaponType()) {
+						healing = true;
+						totalHealing += w1.getMagicAttack() * this.getSkills().get(skill);
+					}
+				}
+			}
+			if(this.getEquippedItem()[1] != null) {
+				if(this.getEquippedItem()[1].getItemType() == "Weapon") {
+					Weapon w1 = (Weapon) this.getEquippedItem()[1];
+					if(w1.getType() == skill.getWeaponType()) {
+						healing = true;
+						totalHealing += w1.getMagicAttack() * this.getSkills().get(skill);
+					}
+				}
+			}
+		}
+
+		if(healing) {
+			totalHealing += skill.getMagicDamage();
+			if(totalHealing >= this.getStat(Stats.max_hp)) this.setHp(this.getStat(Stats.max_hp));
+			else this.setHp(totalHealing + this.getHp());
+		}
+		this.setMp(this.getMp() - skill.getMpCost());
+		return totalHealing;
 	}
 }

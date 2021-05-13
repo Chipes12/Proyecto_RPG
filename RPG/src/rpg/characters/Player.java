@@ -1,5 +1,6 @@
 package rpg.characters;
 
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -203,6 +204,28 @@ public class Player extends Entity{
 	public void die() {
 		if(this.getHp() == 0 && this.isAlive()) this.setAlive(false);
 		this.setXp(0);
+	}
+	@Override
+	public int attack(Skill skill, List<Entity> ptargets) {
+		int totaldmg = super.attack(skill, ptargets);
+		if (totaldmg == 0) return 0;
+
+		int numTargets = skill.getMaxTargets();
+		int tSize = (ptargets == null) ? 1: ptargets.size();
+		if (numTargets-tSize > 0) numTargets = tSize;
+		Enemy target;
+		int defense = 0;
+		for (int t=0; t<numTargets; t++) {
+			defense = 0;
+			if(this.getTargets().get(t).getClass() != this.getClass()) {
+				target = (Enemy) this.getTargets().get(t);
+				defense = target.getStats().get(Stats.defense);
+				if (! target.isShielded()) 
+					target.setHp(totaldmg - defense);
+				target.setShielded(false);
+			} 
+		}
+		return totaldmg;
 	}
 
 }
