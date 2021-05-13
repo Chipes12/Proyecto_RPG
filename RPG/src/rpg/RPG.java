@@ -1,4 +1,5 @@
 package rpg;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -10,57 +11,65 @@ import rpg.specialities.*;
 import rpg.specialities.Skill.SkillEnum;
 
 public abstract class RPG <T>{
-	private static Shop shop = new Shop();
+	private Shop shop;
 	private TreeMap <Player, T> players = new TreeMap<Player, T>();
-	private TreeSet <Enemy> enemies = new TreeSet<Enemy>();
+	private List <Enemy> enemies = new ArrayList<Enemy>();
 	private TreeSet <Item> items = new TreeSet<Item>();
 	private TreeSet <PlayerClass> classes = new TreeSet<PlayerClass>();
 	private TreeSet <Skill> skills = new TreeSet <Skill>();
+	private List <Encounter> encounters = new ArrayList <Encounter>();
+	private Encounter currentEncounter;
 	private static int levelCap = 100;
 	
 	//Constructores
-	public RPG() {};
+	public RPG() {
+		this.setShop(new Shop(this));
+	};
 	
 	//Setters
 	public void setShop(Shop shop) {
-		if (shop != null) RPG.shop = shop;
+		if (shop != null) this.shop = shop;
 	}
 	
 	public void setPlayers(TreeMap<Player, T> players) {
-		if (shop != null) this.players = players;
+		if (players != null) this.players = players;
 	}
 	
-	public void setEnemies(TreeSet<Enemy> enemies) {
-		if (shop != null) this.enemies = enemies;
+	public void setEnemies(List<Enemy> enemies) {
+		if (enemies != null) this.enemies = enemies;
 	}
 
 	public void setItems(TreeSet<Item> items) {
-		if (shop != null) this.items = items;
+		if (items != null) this.items = items;
 	}
 	
 	public void setClasses(TreeSet<PlayerClass> classes) {
-		if (shop != null) this.classes = classes;
+		if (classes != null) this.classes = classes;
 	}
 	
 	public void setSkills(TreeSet<Skill> skills) {
-		if (shop != null) this.skills = skills;
+		if (skills != null) this.skills = skills;
 	}
 
 	public static void setLevelCap(int levelCap) {
 		if (levelCap >= 10) RPG.levelCap = levelCap;
 	}
 	
+	public void setCurrentEncounter(Encounter currentEncounter) {
+		this.currentEncounter = currentEncounter;
+	}
+	
 	//Getters
-	public static Shop getShop() {
-		return RPG.shop;
+	public Shop getShop() {
+		return this.shop;
 	}
 
 	public TreeMap<Player, T> getPlayers() {
 		return players;
 	}
 
-	public TreeSet<Enemy> getEnemies() {
-		return enemies;
+	public List<Enemy> getEnemies() {
+		return this.enemies;
 	}
 
 	public TreeSet<Item> getItems() {
@@ -79,6 +88,10 @@ public abstract class RPG <T>{
 		return levelCap;
 	}
 	
+	public Encounter getCurrentEncounter() {
+		return this.currentEncounter;
+	}
+	
 	//Methods
 	public void addPlayer(Player player, T iD) {
 		if (player != null) this.players.put(player, iD);
@@ -90,6 +103,17 @@ public abstract class RPG <T>{
 	
 	public void addEnemy (String name, int lvl, List<Item> itemDrop, int xpDrop, int goldDrop) {
 		this.enemies.add(new Enemy(name, lvl, itemDrop, xpDrop, goldDrop));
+	}
+	
+	public void addEncounter(List<Enemy> encEnemies) {
+		this.encounters.add(new Encounter(this, encEnemies));
+	}
+	
+	public void beginEncounter(int encIndex, List<Player> encPlayers) {
+		if (encIndex >= 0 && encIndex < this.encounters.size()) {
+			this.encounters.get(encIndex).beginEncounter(encPlayers);
+			this.currentEncounter = this.encounters.get(encIndex);
+		}
 	}
 	
 	public void addClass(PlayerClass Pclass) {

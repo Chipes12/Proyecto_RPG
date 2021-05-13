@@ -25,6 +25,9 @@ public class Player extends Entity{
 	}
 	
 	//Gettters
+	public Bag getBag() {
+		return this.bag;
+	}
 	public Armor getArmor() {
 		return this.armor;
 	}
@@ -75,16 +78,7 @@ public class Player extends Entity{
 		bag.setMoney(bag.getMoney() + money);
 		return false;
 	}
-	@Override
-	public boolean learnSkill(Skill skill) {
-		if (this.isInCombat() || !this.isAlive()) return false;
-		if (this.getSkills().containsKey(skill)) return false;
-		if(this.getLvl() >= skill.getMinLevel() && skill.isLearnable() && this.playerClass.getSkills().contains(skill)) {
-			this.getSkills().put(skill, 1);
-			return true;
-		}
-		return false;
-	}
+	
 	public boolean equipItem(Item item) {
 		if (this.isInCombat() || !this.isAlive()) return false;
 		if(!(this.bag.getItems().containsKey(item)) || this.getLvl() >=item.getLevel()) return false;
@@ -135,13 +129,10 @@ public class Player extends Entity{
 			this.setMp(pStats.get(pStatsA[1])/2);		
 		}
 	}
-	public void die() {
-		if(this.getHp() == 0 && this.isAlive()) this.setAlive(false);
-		this.setXp(0);
-	}
+
 	public boolean useConsumable(Consumable cons) {
 		if (!this.isAlive()) return false;
-		if(!(this.bag.getItems().containsKey(cons))) return false;
+		if(!(this.bag.getItems().containsKey(cons)) || cons.getLevel() > this.getLvl()) return false;
 		cons.boostStasts(this);
 		bag.deleteItem(cons);
 		return true;
@@ -177,7 +168,6 @@ public class Player extends Entity{
 	}
 	
 	public int buyItem(Item item, int quantity) {
-		if (!RPG.getShop().getItems().contains(item)) return 0;
 		Bag b = this.bag;
 		int bagQ = b.getItems().entrySet().stream().mapToInt(Map.Entry::getValue).sum();
 		if (bagQ == Bag.getBAG_SIZE()) return 0;
@@ -199,5 +189,20 @@ public class Player extends Entity{
 		return true;
 	}
 	
+	@Override
+	public boolean learnSkill(Skill skill) {
+		if (this.isInCombat() || !this.isAlive()) return false;
+		if (this.getSkills().containsKey(skill)) return false;
+		if(this.getLvl() >= skill.getMinLevel() && skill.isLearnable() && this.playerClass.getSkills().contains(skill)) {
+			this.getSkills().put(skill, 1);
+			return true;
+		}
+		return false;
+	}
+	@Override
+	public void die() {
+		if(this.getHp() == 0 && this.isAlive()) this.setAlive(false);
+		this.setXp(0);
+	}
 	
 }

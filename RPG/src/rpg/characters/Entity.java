@@ -8,7 +8,7 @@ import rpg.specialities.Skill.SkillEnum;
 import rpg.items.Item;
 import rpg.items.Weapon.WeaponEnum;
 
-public abstract class Entity implements Combat{
+public abstract class Entity{
 	
 	private String name;
 	private static int regenRate = 10;
@@ -64,6 +64,9 @@ public abstract class Entity implements Combat{
 	}
 	public int getLvl() {
 		return lvl;
+	}
+	public int getStat(Stats stat) {
+		return this.getStats().get(stat); 
 	}
 	public static TreeMap<Skill, Integer> getBaseSkills(){
 		return Entity.baseSkills;
