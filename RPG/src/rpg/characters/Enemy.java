@@ -66,4 +66,8 @@ public class Enemy extends Entity{
 		}
 		return false;
 	}
+	@Override
+	public void die() {
+		if(this.getHp() == 0 && this.isAlive()) this.setAlive(false);
+	}
 }
