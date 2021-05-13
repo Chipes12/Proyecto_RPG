@@ -4,7 +4,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import rpg.characters.Stats;
 
-public class PlayerClass {
+public class PlayerClass implements Comparable <PlayerClass> {
 	
 	private String name;
 	private TreeSet<Skill> skills = new TreeSet<Skill>();
@@ -78,5 +78,10 @@ public class PlayerClass {
 			str += i + "\n";
 		}
 		return str;
+	}
+
+	@Override
+	public int compareTo(PlayerClass playerClass) {
+		return this.getName().compareTo(playerClass.getName());
 	}
 }

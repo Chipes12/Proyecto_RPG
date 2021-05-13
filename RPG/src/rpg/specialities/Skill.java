@@ -116,7 +116,10 @@ public class Skill implements Comparable<Skill>{
 	public int compareTo(Skill o) {
 		int comp = Integer.compare(this.getMinLevel(), o.getMinLevel());
 		if(comp != 0) return comp;
-		comp = this.getName().compareTo(o.getName());
-		return comp;
-		}
+		
+		comp = this.skillType.compareTo(o.getSkillType());
+		if(comp != 0) return comp;
+		
+		return this.getName().compareTo(o.getName());
+	}
 }

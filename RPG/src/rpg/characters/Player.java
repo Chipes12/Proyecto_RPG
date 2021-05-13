@@ -8,7 +8,7 @@ import rpg.RPG;
 import rpg.items.*;
 import rpg.specialities.*;
 
-public class Player extends Entity{
+public class Player extends Entity implements Comparable <Player>{
 	
 	private Bag bag = new Bag();
 	private PlayerClass playerClass = null;
@@ -49,6 +49,9 @@ public class Player extends Entity{
 	}
 	public int getStatPoints() {
 		return this.statPoints;
+	}
+	public PlayerClass getPlayerClass() {
+		return this.playerClass;
 	}
 	//setters 
 	public static void setMinToSellRate(int minToSellRate) {
@@ -181,6 +184,24 @@ public class Player extends Entity{
 			}
 		}
 		return quantity;
+	}
+
+	@Override
+	public int compareTo(Player p) {
+		int comp;
+		if (this.getPlayerClass() != null && p.getPlayerClass() != null)
+			comp = this.getPlayerClass().compareTo(p.getPlayerClass());
+		else {
+			if (this.getPlayerClass() == null && p.getPlayerClass() != null)
+				return -1;
+			else if (this.getPlayerClass() != null && p.getPlayerClass() == null)
+				return 1;
+			comp = 0;
+		}
+		
+		if (comp != 0) return comp;
+		
+		return this.getName().compareTo(p.getName());
 	}
 	
 	public boolean sellItem(Item item, int i ) {

@@ -10,8 +10,10 @@ public class Shop {
 	
 	//Constructor
 	public Shop (RPG<?> rpg) {
-		if (rpg == null)
+		if (rpg != null) {
 			Shop.rpg = rpg;
+			Shop.rpg.setShop(this);
+		}		
 	}
 	
 	//Getter
@@ -25,7 +27,9 @@ public class Shop {
 	public void setItems(TreeSet<Item> items) {
 		this.items = items;
 	}
-
+	public void setRPG(RPG<?> rpg) {
+		if (rpg != null) Shop.rpg = rpg;
+	}
 	//Methods
 	
 	//Si se inicializa vacio se pueden agregar Items individualmente

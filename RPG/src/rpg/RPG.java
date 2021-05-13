@@ -12,10 +12,10 @@ import rpg.specialities.Skill.SkillEnum;
 
 public abstract class RPG <T>{
 	private Shop shop;
-	private List <Player> players = new ArrayList<Player>();
+	private TreeMap <Player, T> players = new TreeMap<Player, T>();
 	private List <Enemy> enemies = new ArrayList<Enemy>();
 	private TreeSet <Item> items = new TreeSet<Item>();
-	private List <PlayerClass> classes = new ArrayList<PlayerClass>();
+	private TreeSet<PlayerClass> classes = new TreeSet<PlayerClass>();
 	private TreeSet <Skill> skills = new TreeSet <Skill>();
 	private List <Encounter> encounters = new ArrayList <Encounter>();
 	private Encounter currentEncounter;
@@ -28,10 +28,13 @@ public abstract class RPG <T>{
 	
 	//Setters
 	public void setShop(Shop shop) {
-		if (shop != null) this.shop = shop;
+		if (shop != null) {
+			this.shop = shop;
+			shop.setRPG(this);
+		}
 	}
 	
-	public void setPlayers(List<Player> players) {
+	public void setPlayers(TreeMap<Player, T> players) {
 		if (players != null) this.players = players;
 	}
 	
@@ -43,7 +46,7 @@ public abstract class RPG <T>{
 		if (items != null) this.items = items;
 	}
 	
-	public void setClasses(List<PlayerClass> classes) {
+	public void setClasses(TreeSet<PlayerClass> classes) {
 		if (classes != null) this.classes = classes;
 	}
 	
@@ -64,7 +67,7 @@ public abstract class RPG <T>{
 		return this.shop;
 	}
 
-	public List<Player> getPlayers() {
+	public TreeMap<Player, T> getPlayers() {
 		return players;
 	}
 
@@ -76,7 +79,7 @@ public abstract class RPG <T>{
 		return items;
 	}
 
-	public List<PlayerClass> getClasses() {
+	public TreeSet<PlayerClass> getClasses() {
 		return classes;
 	}
 
@@ -88,13 +91,17 @@ public abstract class RPG <T>{
 		return levelCap;
 	}
 	
+	public List<Encounter> getEncounters(){
+		return this.encounters;
+	}
+	
 	public Encounter getCurrentEncounter() {
 		return this.currentEncounter;
 	}
 	
 	//Methods
-	public void addPlayer(Player player) {
-		if (player != null) this.players.add(player);
+	public void addPlayer(Player player, T iD) {
+		if (player != null) this.players.put(player, iD);
 	}
 	
 	public void addEnemy(Enemy enemy) {
@@ -143,5 +150,49 @@ public abstract class RPG <T>{
 	public void addSkill(String name, int damage, int magicDamage, int mpCost, int minLevel, boolean learnable,
 			WeaponEnum weaponType, SkillEnum skillType) {
 		this.skills.add(new Skill(name, damage, magicDamage, mpCost, minLevel, learnable, weaponType, skillType));
+	}
+	
+	public String toStringPlayers() {
+		String str = "";
+		Player[] playersA = this.players.keySet().toArray(new Player[this.players.size()]);
+		for (Player i: playersA) {
+			str += "ID: " + this.players.get(i) + "\n";
+			str += i.toString() + "\n\n";
+		}	
+		return str;
+	}
+	public String toStringEnemies() {
+		String str = "";
+		for (Enemy i: this.enemies)
+			str += i.toString() + "\n\n";
+		return str;
+	}
+	public String toStringItems() {
+		String str = "";
+		for (Item i: this.items)
+			str += i.toString() + "\n";
+		return str;
+	}
+	public String toStringClasses() {
+		String str = "";
+		for (PlayerClass i: this.classes)
+			str += i.toString() + "\n";
+		return str;
+	}
+	public String toStringSkills() {
+		String str = "";
+		for (Skill i: this.skills)
+			str += i.toString() + "\n";
+		return str;
+	}
+	
+	public String toStringEncounters() {
+		String str = "";
+		for (Encounter i: this.encounters) {
+			str += "----ENCOUNTER #" + this.encounters.indexOf(i) + "----\n\n";
+			str += i.toString() + "\n";
+		}
+			
+		return str;
 	}
 }

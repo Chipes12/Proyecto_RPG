@@ -119,5 +119,17 @@ public class Encounter {
 		}catch(Exception ex) {}
 		return null;
 	}
+	
+	@Override
+	public String toString() {
+		String str = "Enemies\n\n";
+		for (Entity e: encEnemies) 
+			str += e.toString() + "\n\n";
+		if (this.getEncPlayers().size() == 0) return str;
+		str += "\nPlayers\n\n";
+		for (Player p: encPlayers) 
+			str += p.toString() + "\n\n";
+		return str;
+	}
 
 }
