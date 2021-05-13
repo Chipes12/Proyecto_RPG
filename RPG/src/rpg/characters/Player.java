@@ -192,10 +192,11 @@ public class Player extends Entity{
 		return quantity;
 	}
 	
-	public int sellItem(Item item, int i ) {
-		return i;
-
-
+	public boolean sellItem(Item item, int i ) {
+		if (!this.bag.getItems().containsKey(item)) return false;
+		this.bag.setMoney(this.bag.getMoney() + item.getPrice());
+		this.bag.deleteItem(item);
+		return true;
 	}
 	
 	
