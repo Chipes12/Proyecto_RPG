@@ -183,6 +183,13 @@ public abstract class Entity{
 		if(this.isInCombat()) this.setHp(this.getHp() + Entity.regenRate);
 	}
 	
+	public boolean target(Entity entity) {
+		if (!this.isInCombat() || !this.isAlive()) return false;
+		if (entity instanceof Player) this.targets.add((Player)entity);
+		if (entity instanceof Enemy) this.targets.add((Enemy)entity);
+		return true;
+	}
+	
 	public abstract void die();
 	public abstract boolean learnSkill(Skill skill);
 	
