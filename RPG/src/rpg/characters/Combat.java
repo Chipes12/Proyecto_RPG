@@ -3,9 +3,8 @@ import rpg.specialities.Skill;
 
 public interface Combat {
 	
-	public abstract void attack(Skill skill);
-	public abstract void defend(Skill skill);
-	public abstract void heal(Skill skill);
-	public abstract void setTarget();
+	public abstract boolean attack(Skill skill);
+	public abstract boolean defend(Skill skill);
+	public abstract boolean heal(Skill skill);
 
 }

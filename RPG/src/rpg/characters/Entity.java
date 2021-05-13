@@ -2,19 +2,22 @@ package rpg.characters;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.TreeMap;
 import rpg.specialities.Skill;
 import rpg.specialities.Skill.SkillEnum;
 import rpg.items.Item;
+import rpg.items.Weapon;
 import rpg.items.Weapon.WeaponEnum;
 
-public abstract class Entity{
+public abstract class Entity implements Combat{
 	
 	private String name;
 	private static int regenRate = 10;
 	static int baseHp = 100;
 	private static int baseMp = 100;
 	private boolean inCombat = false;
+	private boolean shielded = false;
     private int hp = baseHp;
     private int mp = baseMp;
     private int lvl = 1;
@@ -92,8 +95,9 @@ public abstract class Entity{
 	public boolean isInCombat() {
 		return this.inCombat;
 	}
-	
-	
+	public boolean isShielded() {
+		return this.shielded;
+	}
 	//Setters con restricciones para que no existan numeros negativos o cadenas vacias
 	public static void setRegenRate(int regenRate) {
 		if(regenRate >= 0) Entity.regenRate = regenRate;
@@ -140,7 +144,9 @@ public abstract class Entity{
 	public void setInCombat(boolean inCombat) {
 		this.inCombat = inCombat;
 	}
-	
+	public void setShielded(boolean shielded) {
+		this.shielded = shielded;
+	}
 	//Methods
 	public String toString() {
 		String str = "Name: " + this.getName() + "\n";
@@ -193,6 +199,70 @@ public abstract class Entity{
 	public abstract void die();
 	public abstract boolean learnSkill(Skill skill);
 	
-	
-	
+	@Override
+	public boolean attack(Skill skill) {
+		int totalDamage = 0;
+		boolean isAvaliable = false;
+		totalDamage += this.getStats().get(Stats.strength);
+		if(skill.getSkillType() != Skill.SkillEnum.ATTACK) return false;
+		
+		if(this.getEquippedItem()[0] != null) {
+			if(this.getEquippedItem()[0].getItemType() == "Weapon") {
+				Weapon w1 = (Weapon) this.getEquippedItem()[0];
+				totalDamage += w1.getAttack() + w1.getMagicAttack();
+				if(skill.getWeaponType() == w1.getType()) {
+					isAvaliable = true;
+				}
+			}
+		}
+		if(this.getEquippedItem()[1] != null) {
+			if(this.getEquippedItem()[1].getItemType() == "Weapon") {
+				Weapon w2 = (Weapon) this.getEquippedItem()[1];
+				totalDamage += w2.getAttack() + w2.getMagicAttack();
+				if(skill.getWeaponType() == w2.getType()) {
+					isAvaliable = true;
+				}
+			}
+		}
+		if(isAvaliable) {
+			totalDamage += (skill.getDamage() + skill.getMagicDamage()) * this.getSkills().get(skill);
+		}else {
+			return false;
+		}
+		
+		Random i = new Random();
+		
+		int numTargets = i.nextInt(skill.getMaxTargets())+1;
+		int tSize = this.getTargets().size();
+		if (numTargets-tSize > 0) numTargets = tSize;
+		Player target;
+		int random, defense = 0;
+		for (int t=0; t<numTargets; t++) {
+			defense = 0;
+			random = i.nextInt(this.getTargets().size());
+			if(this.getTargets().get(random).getClass() != this.getClass()) {
+				target = (Player) this.getTargets().get(random);
+				defense += target.getStats().get(Stats.defense);
+				defense += target.getArmor().getArmorClass();
+				if (! target.isShielded()) 
+					target.setHp(totalDamage - defense);
+		
+				target.setShielded(false);
+			} 
+		}
+		return true;
+	}
+
+	@Override
+	public boolean defend(Skill skill) {
+		return alive;
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public boolean heal(Skill skill) {
+		return alive;
+		// TODO Auto-generated method stub
+		
+	}
 }

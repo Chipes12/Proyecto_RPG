@@ -204,5 +204,5 @@ public class Player extends Entity{
 		if(this.getHp() == 0 && this.isAlive()) this.setAlive(false);
 		this.setXp(0);
 	}
-	
+
 }

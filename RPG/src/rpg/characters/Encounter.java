@@ -53,12 +53,25 @@ public class Encounter {
 			if(p.isAlive()) {
 				p.setInCombat(true);
 				this.encPlayers.add(p);
+				p.getTargets().clear();
 			}
 		}
 		this.setEncPlayers(encPlayers);
+		
+		for(Enemy e : encEnemies) {
+			e.setInCombat(true);
+			if(!e.isAlive()) {
+				e.setHp(e.getStat(Stats.max_hp));
+				e.setMp(e.getStat(Stats.max_mp));
+			}
+			e.getTargets().clear();
+			e.getTargets().addAll(encPlayers);
+		}
+		
 		this.turnOrder.addAll(encPlayers);
 		this.turnOrder.addAll(encEnemies);
 		Collections.shuffle(this.turnOrder);
+		
 	}
 	
 	public void endEncounter() {
@@ -73,10 +86,10 @@ public class Encounter {
 				totalGold += e.getGoldDrop();
 				itemDrops.addAll(e.getItemDrop());
 				e.setAlive(true);
-				e.setHp(e.getStat(Stats.max_hp));
-				e.setMp(e.getStat(Stats.max_mp));
-				e.getTargets().clear();
 			}
+			e.setHp(e.getStat(Stats.max_hp));
+			e.setMp(e.getStat(Stats.max_mp));	
+			e.getTargets().clear();
 		}
 		totalExp = totalExp/encPlayers.size();
 		totalGold = totalGold/encPlayers.size();
@@ -98,4 +111,13 @@ public class Encounter {
 		this.turnOrder.clear();
 		this.rpg.setCurrentEncounter(null);
 	}
+	
+	public Entity searchTarget(Entity entity ,int index) {
+		try {
+			if (entity instanceof Player) return this.encEnemies.get(index);
+			if (entity instanceof Enemy) return this.encPlayers.get(index);
+		}catch(Exception ex) {}
+		return null;
+	}
+
 }
