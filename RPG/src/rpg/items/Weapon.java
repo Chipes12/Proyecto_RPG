@@ -14,7 +14,7 @@ public class Weapon extends Item{
 	private int attack = 0;
 	private int magicAttack = 0;
 	private int defense = 0;
-	private WeaponEnum type;
+	private WeaponEnum type = WeaponEnum.NONE;
 	private final static String itemType = "Weapon";
 	
 	//getters
