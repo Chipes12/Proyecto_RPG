@@ -10,7 +10,7 @@ import rpg.specialities.*;
 import rpg.specialities.Skill.SkillEnum;
 
 public abstract class RPG <T> {
-	private Shop shop = new Shop();
+	private static Shop shop = new Shop();
 	private TreeSet <Player <?>> players = new TreeSet<Player<?>>();
 	private TreeSet <Enemy> enemies = new TreeSet<Enemy>();
 	private TreeSet <Item> items = new TreeSet<Item>();
@@ -23,7 +23,7 @@ public abstract class RPG <T> {
 	
 	//Setters
 	public void setShop(Shop shop) {
-		if (shop != null) this.shop = shop;
+		if (shop != null) RPG.shop = shop;
 	}
 	
 	public void setPlayers(TreeSet<Player<?>> players) {
@@ -51,8 +51,8 @@ public abstract class RPG <T> {
 	}
 	
 	//Getters
-	public Shop getShop() {
-		return shop;
+	public static Shop getShop() {
+		return RPG.shop;
 	}
 
 	public TreeSet<Player<?>> getPlayers() {
