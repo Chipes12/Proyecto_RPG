@@ -8,7 +8,7 @@ import rpg.specialities.Skill.SkillEnum;
 import rpg.items.Item;
 import rpg.items.Weapon.WeaponEnum;
 
-public abstract class Entity {
+public abstract class Entity implements Combat{
 	
 	private String name;
 	private static int regenRate = 10;
@@ -139,9 +139,6 @@ public abstract class Entity {
 	}
 	
 	//Methods
-	public void die() {
-		if(this.getHp() == 0 && this.isAlive()) this.setAlive(false);
-	}
 	public String toString() {
 		String str = "Name: " + this.getName() + "\n";
 		str += "Level: " + this.getLvl() + "\nHP: " + this.getHp() + "\tMP: " + this.getMp();
@@ -182,6 +179,8 @@ public abstract class Entity {
 		this.setMp(this.getMp() + Entity.regenRate);
 		if(this.isInCombat()) this.setHp(this.getHp() + Entity.regenRate);
 	}
+	
+	public abstract void die();
 	public abstract boolean learnSkill(Skill skill);
 	
 	
