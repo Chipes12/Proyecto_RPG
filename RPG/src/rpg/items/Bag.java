@@ -1,4 +1,5 @@
 package rpg.items;
+import java.util.Map;
 import java.util.TreeMap;
 
 public class Bag {
@@ -65,13 +66,15 @@ public class Bag {
 	}
 	//Añade item si hay espacio en la bolsa y si es nuevo. Si ya existe, le suma a su cantidad
 	public boolean addItem(Item item) {
-		if (this.items.size() >= Bag.getBAG_SIZE()) return false;
+		int quantity = this.items.entrySet().stream().mapToInt(Map.Entry::getValue).sum();
+		if (quantity >= Bag.getBAG_SIZE()) return false;
 		if (!this.items.containsKey(item))
 			this.items.put(item, 1);
 		else 
 			this.items.put(item, items.get(item)+1);
 		return true;
 	}
+	
 	//Elimina item si este está dentro de la bolsa y solo hay uno de ellos. Si no, le resta 1 a la cantidad
 	public Item deleteItem(Item item) {
 		if (!this.items.containsKey(item)) return null;
