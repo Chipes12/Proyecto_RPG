@@ -1,14 +1,14 @@
 package rpg.characters;
 
+import java.util.Map;
 import java.util.TreeMap;
 
 import rpg.RPG;
 import rpg.items.*;
 import rpg.specialities.*;
 
-public class Player <T> extends Entity{
+public class Player extends Entity{
 	
-	private T iD = null;
 	private Bag bag = new Bag();
 	private PlayerClass playerClass = null;
 	private Armor armor;
@@ -20,9 +20,8 @@ public class Player <T> extends Entity{
 	private static int minToSellRate = 20;  
 	
 	//Constructor
-	public Player(String name, T iD) {
+	public Player(String name) {
 		super(name);
-		if(this.iD == null) this.iD = iD;
 	}
 	
 	//Gettters
@@ -37,9 +36,6 @@ public class Player <T> extends Entity{
 	}
 	public int getXp() {
 		return this.xp;
-	}
-	public T getID() {
-		return this.iD;
 	}
 	public int getLvlRate() {
 		return Player.lvlRate;
@@ -82,7 +78,8 @@ public class Player <T> extends Entity{
 	@Override
 	public boolean learnSkill(Skill skill) {
 		if (this.isInCombat() || !this.isAlive()) return false;
-		if(this.getLvl() >= skill.getMinLevel() && skill.isLearnable()) {
+		if (this.getSkills().containsKey(skill)) return false;
+		if(this.getLvl() >= skill.getMinLevel() && skill.isLearnable() && this.playerClass.getSkills().contains(skill)) {
 			this.getSkills().put(skill, 1);
 			return true;
 		}
@@ -90,7 +87,7 @@ public class Player <T> extends Entity{
 	}
 	public boolean equipItem(Item item) {
 		if (this.isInCombat() || !this.isAlive()) return false;
-		if(!(this.bag.getItems().containsKey(item))) return false;
+		if(!(this.bag.getItems().containsKey(item)) || this.getLvl() >=item.getLevel()) return false;
 		if(item instanceof Armor) {
 			this.armor = (Armor) item;
 			return true;
@@ -174,15 +171,32 @@ public class Player <T> extends Entity{
 	}
 	
 	public boolean levelSkill(Skill skill) {
-		if (!this.isAlive() || this.isInCombat() || this.getStatPoints() <= 0) return false;
+		if (!this.isAlive() || this.isInCombat()) return false;
 		this.getSkills().put(skill, this.getSkills().get(skill) + 1);
 		return true;
 	}
 	
-	public boolean buyItem(Item item, int quantity) {
+	public int buyItem(Item item, int quantity) {
+		if (!RPG.getShop().getItems().contains(item)) return 0;
 		Bag b = this.bag;
-		if (!RPG.getShop().getItems().contains(item) || b.getBAG_SIZE() == b.getItems().size()) return false;
-		if (this.bag.getMoney())
+		int bagQ = b.getItems().entrySet().stream().mapToInt(Map.Entry::getValue).sum();
+		if (bagQ == Bag.getBAG_SIZE()) return 0;
+		for (int i=0; i<quantity; i++) {
+			if (b.getMoney() >= item.getPrice() && bagQ +1 <= Bag.getBAG_SIZE()) {
+				b.setMoney(b.getMoney() - item.getPrice());
+				b.addItem(item);
+			}else {
+				return i;
+			}
+		}
+		return quantity;
 	}
+	
+	public int sellItem(Item item, int i ) {
+		return i;
+
+
+	}
+	
 	
 }

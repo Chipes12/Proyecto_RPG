@@ -9,9 +9,9 @@ import rpg.items.Weapon.WeaponEnum;
 import rpg.specialities.*;
 import rpg.specialities.Skill.SkillEnum;
 
-public abstract class RPG <T> {
+public abstract class RPG <T>{
 	private static Shop shop = new Shop();
-	private TreeSet <Player <?>> players = new TreeSet<Player<?>>();
+	private TreeMap <Player, T> players = new TreeMap<Player, T>();
 	private TreeSet <Enemy> enemies = new TreeSet<Enemy>();
 	private TreeSet <Item> items = new TreeSet<Item>();
 	private TreeSet <PlayerClass> classes = new TreeSet<PlayerClass>();
@@ -26,7 +26,7 @@ public abstract class RPG <T> {
 		if (shop != null) RPG.shop = shop;
 	}
 	
-	public void setPlayers(TreeSet<Player<?>> players) {
+	public void setPlayers(TreeMap<Player, T> players) {
 		if (shop != null) this.players = players;
 	}
 	
@@ -55,7 +55,7 @@ public abstract class RPG <T> {
 		return RPG.shop;
 	}
 
-	public TreeSet<Player<?>> getPlayers() {
+	public TreeMap<Player, T> getPlayers() {
 		return players;
 	}
 
@@ -80,12 +80,8 @@ public abstract class RPG <T> {
 	}
 	
 	//Methods
-	public void addPlayer(Player <?> player) {
-		if (player != null) this.players.add(player);
-	}
-	
-	public void addPlayer(T iD, String name) {
-		this.players.add(new Player<T>(name, iD));
+	public void addPlayer(Player player, T iD) {
+		if (player != null) this.players.put(player, iD);
 	}
 	
 	public void addEnemy(Enemy enemy) {
