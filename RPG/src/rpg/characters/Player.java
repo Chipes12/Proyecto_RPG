@@ -2,6 +2,7 @@ package rpg.characters;
 
 import java.util.TreeMap;
 
+import rpg.RPG;
 import rpg.items.*;
 import rpg.specialities.*;
 
@@ -12,6 +13,9 @@ public class Player <T> extends Entity{
 	private PlayerClass playerClass = null;
 	private Armor armor;
 	private int xp = 0;
+	private int statPoints = 5;
+	private static int lvlRate = 55;
+	private static int baseStatPoints = 2;
 	private static double sellRate = 0.80;
 	private static int minToSellRate = 20;  
 	
@@ -25,17 +29,26 @@ public class Player <T> extends Entity{
 	public Armor getArmor() {
 		return this.armor;
 	}
-	public static double getSellRate() {
-		return sellRate;
+	public double getSellRate() {
+		return Player.sellRate;
 	}
-	public static int getMinToSellRate() {
-		return minToSellRate;
+	public int getMinToSellRate() {
+		return Player.minToSellRate;
 	}
 	public int getXp() {
 		return this.xp;
 	}
 	public T getID() {
 		return this.iD;
+	}
+	public int getLvlRate() {
+		return Player.lvlRate;
+	}
+	public int getBaseStatPoints() {
+		return Player.baseStatPoints;
+	}
+	public int getStatPoints() {
+		return this.statPoints;
 	}
 	//setters 
 	public static void setMinToSellRate(int minToSellRate) {
@@ -45,9 +58,17 @@ public class Player <T> extends Entity{
 		if (sellRate > 0 && sellRate < 1) Player.sellRate = sellRate;
 	}
 	public void setXp(int xp) {
-		if(xp >= 0) this.xp = xp;
+		if (this.getLvl() != RPG.getLevelCap() && xp >= 0) this.xp = xp;
 	}
-	
+	public void setLvlRate(int lvlRate) {
+		if (lvlRate >= 10) Player.lvlRate = lvlRate;
+	}
+	public void setBaseStatPoints(int baseStatPoints) {
+		if (baseStatPoints >= 0) Player.baseStatPoints = baseStatPoints;
+	}
+	public void setStatPoints(int statPoints) {
+		if (baseStatPoints >= 0) this.statPoints = statPoints;
+	}
 	//Methods
 	public boolean sellItem(Item item) {
 		if (this.isInCombat() || !this.isAlive()) return false;
@@ -99,6 +120,14 @@ public class Player <T> extends Entity{
 		if (this.isInCombat() || !this.isAlive()) return;
 		if(this.playerClass == null) {
 			this.playerClass = pc;
+			TreeMap <Stats, Integer> cStats = this.getStats();
+			Stats[] cStatsA = cStats.keySet().toArray(new Stats[7]);
+			pc.getStatModifiers();
+			TreeMap <Stats, Integer> pStats = this.getStats();
+			Stats[] pStatsA = pStats.keySet().toArray(new Stats[7]);
+			
+			for(int i = 0; i < 7; i++)
+				pStats.put(pStatsA[i], pStats.get(pStatsA[i]) + cStats.get(cStatsA[i]));
 		}
 	}
 	public void revive() {
@@ -119,6 +148,41 @@ public class Player <T> extends Entity{
 		cons.boostStasts(this);
 		bag.deleteItem(cons);
 		return true;
+	}
+	
+	public boolean levelUp() {
+		if (RPG.getLevelCap() == this.getLvl()) return false;
+		int capXP = this.getLvl()*Player.lvlRate;
+		if (this.getXp() < capXP) return false;
+		
+		this.setXp(this.getXp() - capXP);
+		this.setLvl(this.getLvl() + 1);
+		this.setStatPoints(Player.baseStatPoints);
+		
+		if (RPG.getLevelCap() >= this.getLvl()) {
+			this.setLvl(RPG.getLevelCap());
+			this.setXp(0);
+			this.setStatPoints(0);
+		}
+		return true;
+	}
+	
+	public boolean levelStat(Stats stat) {
+		if (!this.isAlive() || this.isInCombat() || this.getStatPoints() <= 0) return false;
+		this.getStats().put(stat, this.getStats().get(stat) + 1);
+		return true;
+	}
+	
+	public boolean levelSkill(Skill skill) {
+		if (!this.isAlive() || this.isInCombat() || this.getStatPoints() <= 0) return false;
+		this.getSkills().put(skill, this.getSkills().get(skill) + 1);
+		return true;
+	}
+	
+	public boolean buyItem(Item item, int quantity) {
+		Bag b = this.bag;
+		if (!RPG.getShop().getItems().contains(item) || b.getBAG_SIZE() == b.getItems().size()) return false;
+		if (this.bag.getMoney())
 	}
 	
 }
