@@ -85,6 +85,7 @@ public class Player extends Entity implements Comparable <Player>{
 	
 	public boolean equipItem(Item item) {
 		if (this.isInCombat() || !this.isAlive()) return false;
+		if(this.bag.getItems().get(item) == 1 && this.getEquippedItem()[0] != item && this.getEquippedItem()[1] != item) return false;
 		if(!(this.bag.getItems().containsKey(item)) || this.getLvl() < item.getLevel()) return false;
 		if(item instanceof Armor) {
 			this.armor = (Armor) item;
