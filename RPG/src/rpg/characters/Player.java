@@ -85,7 +85,7 @@ public class Player extends Entity implements Comparable <Player>{
 	
 	public boolean equipItem(Item item) {
 		if (this.isInCombat() || !this.isAlive()) return false;
-		if(!(this.bag.getItems().containsKey(item)) || this.getLvl() >=item.getLevel()) return false;
+		if(!(this.bag.getItems().containsKey(item)) || this.getLvl() < item.getLevel()) return false;
 		if(item instanceof Armor) {
 			this.armor = (Armor) item;
 			return true;
@@ -97,19 +97,21 @@ public class Player extends Entity implements Comparable <Player>{
 		this.setEquippedItem(newItems);
 		return true;
 	}
-	public boolean unequipItem() {
-		if (this.isInCombat() || !this.isAlive()) return false;
+	public Item unequipItem() {
+		if (this.isInCombat() || !this.isAlive()) return null;
 		Item[] prevItems = this.getEquippedItem();
-		if(prevItems[0] == null && prevItems[1] == null) return false;
+		if(prevItems[0] == null && prevItems[1] == null) return null;
 		if(prevItems[0] != null && prevItems[1] == null) {
+			Item temp = prevItems[0];
 			prevItems[1] = null;
 			prevItems[0] = null;
-			return true;
+			return temp;
 		}
+		Item temp = prevItems[0];
 		prevItems[0] = prevItems[1];
 		prevItems[1] = null;
 		this.setEquippedItem(prevItems);
-		return true;
+		return temp;
 	}
 	public void chooseClass(PlayerClass pc) {
 		if (this.isInCombat() || !this.isAlive()) return;

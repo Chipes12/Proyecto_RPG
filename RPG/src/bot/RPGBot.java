@@ -12,6 +12,7 @@ import rpg.characters.Enemy;
 import rpg.characters.Player;
 import rpg.characters.Stats;
 import rpg.items.Armor;
+import rpg.items.Bag;
 import rpg.items.Consumable;
 import rpg.items.Item;
 import rpg.items.Shop;
@@ -23,19 +24,17 @@ import rpg.specialities.Skill.SkillEnum;
 
 public class RPGBot {
 	public static Bot bot;
+	public static RPG<Long> juego = new RPG<Long>() {};
+	
 	public static void main(String[] args) throws IOException {
 
 
         try {
-            bot = new Bot("!", "An RPG Bot!");
+            bot = new Bot("!", "An RPG Bot!", RPGBot.juego);
         } catch (LoginException e) {
             e.printStackTrace();
         }
-
-		
-		
-		RPG<Long> juego = new RPG<Long>() {
-		};
+        
 		//Habilidades
 		Skill sk1_1 = new Skill("Corte", 10, 0, 5, 1, true, WeaponEnum.MELEE, SkillEnum.ATTACK);
 		Skill sk1_2 = new Skill("Golpe Duro", 20, 0, 15, 1, true, WeaponEnum.MELEE, SkillEnum.ATTACK);
@@ -127,6 +126,13 @@ public class RPGBot {
 		juego.addItem(c2);
 		juego.addItem(c3);
 		
+		TreeMap <Item, Integer> initItems = new TreeMap<Item, Integer>();
+		initItems.put(w4, 1);
+	    //Bag statics
+        Bag.setBAG_SIZE(40);
+        Bag.setInitialMoney(200);
+        Bag.setInitialItems(initItems);
+        
 		//Dropeos
 		List<Item> slimeDrop = new ArrayList<>();
 		slimeDrop.add(i1);
@@ -140,13 +146,6 @@ public class RPGBot {
 		juego.addEnemy("Goblin", 3, goblinDrop, 10, 10);
 		juego.addEnemy("Skeleton", 2, skeletonDrop, 5, 5);
 		juego.addEnemy("Slime", 1, slimeDrop, 1, 1);
-		
-		//Jugadores
-		Player p1 = new Player("Chipes");
-		Player p2 = new Player("Gyuunto");
-		
-		juego.addPlayer(p1,1L);
-		juego.addPlayer(p2,2L);
 		
 		//Tienda
 		Shop shop = new Shop(juego);

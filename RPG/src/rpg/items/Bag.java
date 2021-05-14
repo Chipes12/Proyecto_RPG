@@ -3,16 +3,18 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class Bag {
-	//items es un TreeMap para no tener items repetidos y asociarlos con la cantidad en la bolsa
-	private TreeMap <Item, Integer> items = new TreeMap<Item,Integer>();
-	private int money;
+	
 	//Atributos static para usarse cuando se cree cualquier bag
 	private static int BAG_SIZE = 30;
 	private static int initialMoney = 20;
-	private static TreeMap <Item, Integer> initialItems; 
-	
+	private static TreeMap <Item, Integer> initialItems = new TreeMap<Item,Integer>(); 
+	//items es un TreeMap para no tener items repetidos y asociarlos con la cantidad en la bolsa
+	private TreeMap <Item, Integer> items = new TreeMap<Item,Integer>();
+	private int money = initialMoney;
 	//Constructor
-	public Bag() {}
+	public Bag() {
+		this.items.putAll(initialItems);
+	}
 	
 	//Setters
 	public void setItems(TreeMap <Item, Integer> items) {
@@ -85,12 +87,14 @@ public class Bag {
 	}
 	//To string que recorre un TreeMap convertido en array, regresando ambos item y la cantidad de estos
 	public String toString() {
-		String str = "";
+		int quantity = this.items.entrySet().stream().mapToInt(Map.Entry::getValue).sum();
+		String str = "Capacity: "+ quantity + "/" + Bag.BAG_SIZE  +"\n\nGold: " 
+					+ this.getMoney() + "\n\n";
 		Item temp []= new Item[items.size()];
 		Item item;
-		for(int i = 1; i <= this.items.size(); i++) {
+		for(int i = 0; i < this.items.size(); i++) {
 			item = this.items.keySet().toArray(temp)[i];
-			str += i +") " + item.toString() + "\tAmount: " + this.items.get(item) + "\n";
+			str += (i+1) +") " + item.toString() + "\t|Amount: " + this.items.get(item) + "\n";
 		}
 		return str;
 	}

@@ -100,8 +100,13 @@ public abstract class RPG <T>{
 	}
 	
 	//Methods
-	public void addPlayer(Player player, T iD) {
+	public void addPlayer(T iD, Player player) {
 		if (player != null) this.players.put(iD, player);
+	}
+	
+	public void addPlayer(T iD, String name) {
+		Player p = new Player(name);
+		this.players.put(iD, p);
 	}
 	
 	public void addEnemy(Enemy enemy) {

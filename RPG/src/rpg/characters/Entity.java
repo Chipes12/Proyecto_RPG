@@ -153,7 +153,7 @@ public abstract class Entity implements Combat{
 		return str;
 	}
 	public String toStringDetails() {
-		String str = this.toString() + "\nStats: \n\n";
+		String str = this.toString() + "\n\nStats: \n--------------\n";
 		String strStats = this.getStats().toString();
 		String [] arrayStats = strStats.split(", ");
 		for(String i : arrayStats) {
@@ -161,7 +161,7 @@ public abstract class Entity implements Combat{
 			if(i.endsWith("}")) i = i.substring(0, i.length()-1);
 			str += i + "\n";
 		}
-		str += "\nSkills: \n\n";
+		str += "\nSkills: \n--------------\n";
 		String strSkills = this.getSkills().toString();
 		String [] arraySkills = strSkills.split(", ");
 		for(String i : arraySkills) {

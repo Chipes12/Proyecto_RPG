@@ -64,7 +64,7 @@ public class Item implements Comparable <Item>{
 	
 	//toString sólo da la información basica de un item que son su precio, nivel, nombre y tipo de objeto
 	public String toString() {
-		return this.getName() + "\t$" + this.getPrice() + "\tLvl:" + this.getLevel() + "\tType: " + this.itemType;
+		return this.getName() + "\t| $" + this.getPrice() + "\t| Lvl:" + this.getLevel() + "\t\tType: " + this.itemType;
 	}
 	
 	//toStringDetails se sobreescribira más adelante aquí sólamente se le añade la leyenda si es que hay una
