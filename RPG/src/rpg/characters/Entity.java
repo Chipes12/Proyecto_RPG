@@ -172,6 +172,12 @@ public abstract class Entity implements Combat{
 		str += "\n";
 		if(this.isAlive()) str += "State: Alive";
 		else str += "State: Dead";
+		if (this.equippedItem[0] != null || this.equippedItem[1] != null) {
+			str += "\n\nEquipped Items:\n--------------\n    ";
+			if (this.equippedItem[0]!= null) str += this.equippedItem[0].toString() +  "\n    ";
+			if (this.equippedItem[1]!= null) str += this.equippedItem[1].toString();
+		}
+		
 		return str;
 	}
 	public boolean equals(Object obj) {

@@ -6,7 +6,7 @@ import rpg.characters.Player;
 
 public class Consumable extends Item{
 
-	private int healAmount;
+	private int healAmount = 0;
 	private TreeMap<Stats, Integer> boostedStats = new TreeMap<Stats,Integer>();
 	private boolean durationLimit = true;
 	private static long baseDuration = 1000;
@@ -25,11 +25,17 @@ public class Consumable extends Item{
 		temp.put(Stats.constitution, 0);
 		temp.put(Stats.defense, 0);
 		this.setBoostedStasts(temp);
+		this.setItemType(itemType);
 	}
 	
 	public Consumable(String name, int price, int level, TreeMap<Stats, Integer> boostedStats) {
 		super(name, price, level);
 		this.setBoostedStasts(boostedStats);
+	}
+	
+	public Consumable(String name, int price, int level, int healAmount) {
+		super(name, price, level);
+		this.setHealAmount(healAmount);
 	}
 	
 	public Consumable(String name, int price, int level, int hp, int mp, int str, int inte, int dex, int con, int def) {
@@ -43,6 +49,7 @@ public class Consumable extends Item{
 		temp.put(Stats.constitution, con);
 		temp.put(Stats.defense, def);
 		this.setBoostedStasts(temp);
+		this.setItemType(itemType);
 	}
 	
 	//Getters
@@ -109,6 +116,7 @@ public class Consumable extends Item{
 	}
 	
 	public void boostStasts(Player player) {
+		player.setHp(player.getHp() + this.healAmount);
 		TreeMap <Stats, Integer> pStats = player.getStats();
 		Stats[] pStatsA = pStats.keySet().toArray(new Stats[7]);
 		

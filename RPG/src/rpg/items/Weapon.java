@@ -17,6 +17,17 @@ public class Weapon extends Item{
 	private WeaponEnum type = WeaponEnum.NONE;
 	private final static String itemType = "Weapon";
 	
+	//Constructor con llamada a la super clase y definicion de todos los elementos
+	public Weapon(String name, int price, int level, int attack, int magicAttack, int defense, WeaponEnum type) {
+		super(name, price, level);
+		this.setAttack(attack);
+		this.setMagicAttack(magicAttack);
+		this.setDefense(defense);
+		this.setType(type);
+		this.setItemType(itemType);
+	}
+		
+		
 	//getters
 	public int getAttack() {
 		return attack;
@@ -51,15 +62,6 @@ public class Weapon extends Item{
 		}
 	}
 	
-	//Constructor con llamada a la super clase y definicion de todos los elementos
-	public Weapon(String name, int price, int level, int attack, int magicAttack, int defense, WeaponEnum type) {
-		super(name, price, level);
-		this.setAttack(attack);
-		this.setMagicAttack(magicAttack);
-		this.setDefense(defense);
-		this.setType(type);
-		this.setItemType(itemType);
-	}
 	
 	//Methods
 	

@@ -143,10 +143,9 @@ public class Commands extends ListenerAdapter {
 						return;
 					}
 					if (p.useConsumable((Consumable)item)) {
-						event.getChannel().sendMessage("Has usado \"" + item.getName()+ "\"").queue();
+						event.getChannel().sendMessage("Has usado:\n\n" + item.toStringDetails()).queue();
 						p.getBag().deleteItem(item);
 						((Consumable)item).boostStasts(p);
-						event.getChannel().sendMessage("Efectos: \n" + ((Consumable)item).toStringDetails()).queue();
 					}
 					return;
 				}   

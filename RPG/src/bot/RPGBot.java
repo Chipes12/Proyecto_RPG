@@ -128,6 +128,7 @@ public class RPGBot {
 		
 		TreeMap <Item, Integer> initItems = new TreeMap<Item, Integer>();
 		initItems.put(w4, 1);
+		initItems.put(c1, 3);
 	    //Bag statics
         Bag.setBAG_SIZE(40);
         Bag.setInitialMoney(200);
