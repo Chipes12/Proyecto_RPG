@@ -114,8 +114,8 @@ public class Player extends Entity implements Comparable <Player>{
 		this.setEquippedItem(prevItems);
 		return temp;
 	}
-	public void chooseClass(PlayerClass pc) {
-		if (this.isInCombat() || !this.isAlive()) return;
+	public boolean chooseClass(PlayerClass pc) {
+		if (this.isInCombat() || !this.isAlive()) return false;
 		if(this.playerClass == null) {
 			this.playerClass = pc;
 			TreeMap <Stats, Integer> cStats = this.getStats();
@@ -127,6 +127,7 @@ public class Player extends Entity implements Comparable <Player>{
 			for(int i = 0; i < 7; i++)
 				pStats.put(pStatsA[i], pStats.get(pStatsA[i]) + cStats.get(cStatsA[i]));
 		}
+		return true;
 	}
 	public void revive() {
 		if(this.getHp() == 0 && this.isAlive() == false) {
