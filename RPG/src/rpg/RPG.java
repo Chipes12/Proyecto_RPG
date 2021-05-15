@@ -181,8 +181,11 @@ public abstract class RPG <T>{
 	public String toStringClasses() {
 		String str = "";
 		int j = 1;
-		for (PlayerClass i: this.classes)
+		for (PlayerClass i: this.classes) {
 			str += j + ") " + i.toString() + "\n";
+			j++;
+		}
+			
 		return str;
 	}
 	public String toStringSkills() {

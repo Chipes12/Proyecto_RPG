@@ -10,8 +10,10 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import rpg.characters.Player;
+import rpg.characters.Stats;
 import rpg.items.Consumable;
 import rpg.items.Item;
+import rpg.specialities.PlayerClass;
 
 public class Commands extends ListenerAdapter {
 
@@ -20,7 +22,7 @@ public class Commands extends ListenerAdapter {
 	List<String> guilds = new ArrayList<String> ();
 	TreeMap <Long, Player> users = new TreeMap <Long, Player>();
 	List<String> bConfig = Arrays.asList("help", "prefix <new-prefix>", "join game", "get players");
-	List<String> characterC = Arrays.asList("info", "bag" ,"use <item-bag-index>", "equip <item-bag-index>", "unequip", "level <stat> <points>", "level <skill-id> <points>");
+	List<String> characterC = Arrays.asList("info", "bag" ,"use <item-bag-index>", "equip <item-bag-index>", "unequip", "level <stat> <points>", "classes","level <skill-id> <points>");
 	List<String> shoppingC = Arrays.asList("shop", "buy <item-index> <quantity>", "sell <item-bag-index>");
 	List<String> fightingC = Arrays.asList("fight");
 	
@@ -120,8 +122,6 @@ public class Commands extends ListenerAdapter {
 			else if (args[0].equalsIgnoreCase(this.prefix + arg(characterC,1,0))) {
 			      EmbedBuilder info = new EmbedBuilder();
 			      info.setTitle("Bolsa de " + user.getName());
-			      System.out.println(p);
-			      System.out.println(p.getBag().toString());
 			      info.setDescription(p.getBag().toString() + "\n");
 			      info.setColor(0x04d7de);
 			      event.getChannel().sendMessage(info.build()).queue();
@@ -173,7 +173,7 @@ public class Commands extends ListenerAdapter {
 					}
 					return;
 				}  
-				event.getChannel().sendMessage("Item" + item.toString()+q).queue();
+				event.getChannel().sendMessage("El item no está en tu bolsa").queue();
 			}
 			//!unequip
 			else if (args[0].equalsIgnoreCase(this.prefix + arg(characterC,4,0))) {
@@ -185,10 +185,67 @@ public class Commands extends ListenerAdapter {
 			}
 			//!level <stat> <stat-points>
 			else if (args[0].equalsIgnoreCase(this.prefix + arg(characterC,5,0))) {
-		
+				try {
+					args[1].toLowerCase();
+					Stats.valueOf(args[1]);
+					Integer.parseInt(args[2]);
+				} catch(Exception ex) {
+					event.getChannel().sendMessage("Indica el stat más los stat points `level <stat> <stat-points>`").queue();
+					return;
+				}
+				Stats stat = Stats.valueOf(args[1]);
+				if (stat == Stats.max_hp || stat == Stats.max_mp) {
+					event.getChannel().sendMessage("No puedes lvlear max_hp/max_mp").queue();
+					return;
+				};
+				int points = Integer.parseInt(args[2]);
+				
+				if (p.getStatPoints() - points < 0 || points == 0) {
+					event.getChannel().sendMessage("No tienes suficientes puntos").queue();
+					return;
+				}
+				
+				for (int i=0; i<points; i++) {
+					p.levelStat(stat);
+					p.setStatPoints(p.getStatPoints() - 1);
+				}
+				event.getChannel().sendMessage("Leveleaste: " + stat).queue();
 			}
-			//!level <skill-id> <points>
+			//!classes
 			else if (args[0].equalsIgnoreCase(this.prefix + arg(characterC,6,0))) {
+				  EmbedBuilder info = new EmbedBuilder();
+			      info.setTitle("Clases");
+			      info.setDescription(this.bot.getRPG().toStringClasses() + "\n");
+			      info.setColor(0x04d7de);
+			      event.getChannel().sendMessage(info.build()).queue();
+			      info.clear();	
+			}
+			//!choose class <class>
+			else if (args[0].equalsIgnoreCase(this.prefix + "choose class")) {
+                try {
+                    Integer.parseInt(args[1]);
+                } catch(Exception ex) {
+                    event.getChannel().sendMessage("Qué clase quieres `choose class <Class_id>`").queue();
+                    return;
+                }
+                int q = Integer.parseInt(args[1]) - 1;
+                int j = 0;
+                PlayerClass[] classes = new PlayerClass[this.bot.getRPG().getClasses().size()];
+                for(PlayerClass i: this.bot.getRPG().getClasses())
+                    classes[j] = i;
+                PlayerClass pc = classes[q];
+
+                if (pc != null) {
+
+                    if (p.chooseClass(pc)) {
+                        event.getChannel().sendMessage("Ahora eres un :\n" + pc.getName()).queue();
+                    }
+                    return;
+                }
+                event.getChannel().sendMessage("Nuevos detalles " + pc.toString()).queue();
+            }
+			//!level <skill-id> <points>
+			else if (args[0].equalsIgnoreCase(this.prefix + arg(characterC,7,0))) {
 		
 			}
 			
@@ -228,18 +285,29 @@ public class Commands extends ListenerAdapter {
 			}
 			//!sell <item-index>
 			else if (args[0].equalsIgnoreCase(this.prefix + arg(shoppingC,2,0))) {
-				EmbedBuilder info = new EmbedBuilder();
-			    info.setTitle("SHOP");
-			    info.setDescription(this.bot.getRPG().getShop().toString() + "\n");
-			    info.setColor(0x04d7de);
-			    event.getChannel().sendMessage(info.build()).queue();
-			    info.clear();	
-			}
+                try {
+                    Integer.parseInt(args[1]);
+                } catch(Exception ex) {
+                    event.getChannel().sendMessage("Indica el número de item en tu bolsa sell <item_bag_index>").queue();
+                    return;
+                }
+                int q = Integer.parseInt(args[1]) - 1;
+                Item item = p.getBag().selectItem(q);
+
+                if (item != null) {
+
+                    if (p.sellItem(item)) {
+                        event.getChannel().sendMessage("Has Vendido:\n" + item.toStringDetails()).queue();
+                    }
+                    return;
+                }
+                event.getChannel().sendMessage("Nuevo saldo" + p.getBag().toString()+q).queue();
+            }
+			//FIGHTING
+
 		} else if (args[0].contains(prefix)) {
 			 event.getChannel().sendMessage("Usa !join game para jugar").queue();
 		}
-		
-		  
-		
+
 	}
 }
